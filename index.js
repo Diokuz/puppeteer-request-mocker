@@ -18,6 +18,9 @@ const defaultParams = {
   localPage: page,
   skipQueryParams: [],
   whiteList: [],
+  force: false,
+  ci: false,
+  verbose: false,
 }
 
 const matches = (arr, str) => !!arr.find((el) => str.includes(el))
@@ -30,7 +33,7 @@ const shouldSkip = (whiteList = [], url = '') => {
 
 function mock (paramsArg) {
   const params = Object.assign({}, defaultParams, paramsArg)
-  const { rootDir, namespace, localPage, whiteList } = params
+  const { rootDir, namespace, localPage, whiteList, force, ci, verbose } = params
   const workDir = path.join(rootDir, namespace)
 
   if (pagesSet.has(localPage)) {
@@ -90,10 +93,14 @@ function mock (paramsArg) {
           body: `${method.toUpperCase()} ${url} ${postData}\n\n${text}`,
           workDir,
           skipQueryParams: params.skipQueryParams,
+          force,
+          ci,
         })
       })
       .catch((err) => {
-        console.error(err)
+        if (verbose) {
+          console.error(err)
+        }
       })
   }
 
@@ -107,7 +114,9 @@ function mock (paramsArg) {
       localPage.on('response', handlerResponse)
     })
     .catch((e) => {
-      console.log(e)
+      if (verbose) {
+        console.log(e)
+      }
     })
     .then(() => ({
       // This guy will be used in `stop` exported method
