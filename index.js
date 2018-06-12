@@ -15,7 +15,7 @@ if (typeof page === 'undefined') {
 const defaultParams = {
   rootDir: path.join(process.cwd(), '__mocks__'),
   namespace: '__mocks__',
-  localPage: page,
+  page: typeof page === 'undefined' ? null : page,
   skipQueryParams: [],
   whiteList: [],
   force: false,
@@ -33,8 +33,13 @@ const shouldSkip = (whiteList = [], url = '') => {
 
 function mock (paramsArg) {
   const params = Object.assign({}, defaultParams, paramsArg)
-  const { rootDir, namespace, localPage, whiteList, force, ci, verbose } = params
+  const { rootDir, namespace, whiteList, force, ci, verbose } = params
+  const localPage = params.page
   const workDir = path.join(rootDir, namespace)
+
+  if (!localPage) {
+    throw new Error('Option "page" and global.page – both are not defined')
+  }
 
   if (pagesSet.has(localPage)) {
     throw new Error('Second mock call on the same page! Probably you forgot to restore previous mock.')
