@@ -8,10 +8,6 @@ const storage = require('./storage')
 
 const pagesSet = new Set()
 
-if (typeof page === 'undefined') {
-  console.error(`Puppeteer page is undefined`)
-}
-
 const defaultParams = {
   rootDir: path.join(process.cwd(), '__mocks__'),
   namespace: '__mocks__',
