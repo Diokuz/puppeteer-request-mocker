@@ -13,7 +13,8 @@ const defaultParams = {
   namespace: '__mocks__',
   page: typeof page === 'undefined' ? null : page,
   skipQueryParams: [],
-  whiteList: [],
+  okList: [],
+  mockList: [],
   force: false,
   ci: false,
   verbose: false,
@@ -21,15 +22,28 @@ const defaultParams = {
 
 const matches = (arr, str) => !!arr.find((el) => str.includes(el))
 
-const shouldSkip = (whiteList = [], url = '') => {
-  // If whiteList wasnt set – intercept all requests except localhost
-  return (whiteList.length > 0 && !matches(whiteList, url)) ||
-    (whiteList.length === 0 && url.includes('localhost'))
+// @todo tests
+const shouldNotIntercept = (mockList = [], okList = [], url = '') => {
+  const inOkList = matches(okList, url)
+  const inMockList = matches(mockList, url)
+  const inAnyList = inOkList || inMockList
+  const listsAreConfigured = mockList.length > 0 || okList.length > 0
+
+  // If mockList/okList werent set – intercept all requests except localhost
+  return (listsAreConfigured && !inAnyList) ||
+    (!listsAreConfigured && url.includes('localhost'))
+}
+
+const shouldOk = (mockList = [], okList = [], url = '') => {
+  const inOkList = matches(okList, url)
+  const inMockList = matches(mockList, url)
+
+  return inOkList && !inMockList
 }
 
 function mock (paramsArg) {
   const params = Object.assign({}, defaultParams, paramsArg)
-  const { rootDir, namespace, whiteList, force, ci, verbose } = params
+  const { rootDir, namespace, mockList, okList, force, ci, verbose } = params
   const localPage = params.page
   const workDir = path.join(rootDir, namespace)
 
@@ -48,8 +62,24 @@ function mock (paramsArg) {
     const method = interceptedRequest.method()
     const postData = interceptedRequest.postData()
 
-    if (shouldSkip(whiteList, url)) {
+    if (shouldNotIntercept(mockList, okList, url)) {
       interceptedRequest.continue()
+
+      return
+    }
+
+    // Just say OK, dont save the mock
+    if (shouldOk(mockList, okList, url)) {
+      interceptedRequest.respond({
+        headers: {
+          'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+        body: 'OK',
+        status: '200',
+      })
+
       return
     }
 
@@ -81,7 +111,8 @@ function mock (paramsArg) {
     const url = request.url()
     const method = request.method()
 
-    if (shouldSkip(whiteList, url)) {
+    // If synthetic OK-response, no needs to write it to fs
+    if (shouldNotIntercept(mockList, okList, url) || shouldOk(mockList, okList, url)) {
       return
     }
 

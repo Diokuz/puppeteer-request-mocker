@@ -50,7 +50,14 @@ const options = {
   // And you definitely dont want to mock your webapp requests (e.g. localhost/app.js)
   // So, you could explicitly whitelist urls you want to mock
   // _all except localhost_ by default
-  whiteList: [''],
+  mockList: ['my-backend.org/used/by/test'],
+
+  // It is recommended to explicitly mock only _critical-for-your-test_ urls
+  // But you could also mock with simple 200-OK response some other requests,
+  // which are not critical, but should be intercepted
+  // (to prevent ddos-effect to your real backend, for example)
+  // All items from mockList have higher priority over okList
+  okList: ['my-backend.org/not/critical/for/test'],
 
   // Run as CI if true. That means, your tests will fail if any of the requests were not mocked
   ci: false,
