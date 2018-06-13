@@ -27,5 +27,7 @@
     "crypto": "^1.0.1",
     "make-dir": "^1.3.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^23.1.0"
+  }
 }

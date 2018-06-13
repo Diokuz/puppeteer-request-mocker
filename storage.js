@@ -4,8 +4,21 @@ const { URL } =  require('url')
 const crypto =  require('crypto')
 const makeDir = require('make-dir')
 
-const mfn = (url, method, postData = '', skipQueryParams = []) => {
+const mfn = (url, method = 'GET', postDataArg = '', skipQueryParams = [], skipPostParams = []) => {
   const urlObj = new URL(url)
+  let postData = postDataArg
+  let postObj
+
+  try {
+    postObj = JSON.parse(postData)
+  } catch (e) {
+    // pass
+  }
+
+  if (postObj) {
+    skipPostParams.forEach((param) => delete postObj[param])
+    postData = JSON.stringify(postObj)
+  }
 
   // Some parameters could vary over the time, so we can exclude them from naming
   // (be carefull, use it only if it does not affect actual response body)
@@ -19,10 +32,10 @@ const mfn = (url, method, postData = '', skipQueryParams = []) => {
   return `${method.toLowerCase()}-${hash}`
 }
 
-const getNames = (url, method, postData = '', workDir, skipQueryParams = []) => {
+const getNames = (url, method, postData = '', workDir, skipQueryParams = [], skipPostParams = []) => {
   const { hostname, pathname, protocol } = new URL(url)
   const targetDir = path.join(workDir, `${hostname}${pathname.replace(/\//g, '-')}`)
-  const fileName = mfn(url, method, postData, skipQueryParams)
+  const fileName = mfn(url, method, postData, skipQueryParams, skipPostParams)
   const absFileName = path.join(targetDir, fileName)
 
   return {
@@ -31,8 +44,8 @@ const getNames = (url, method, postData = '', workDir, skipQueryParams = []) => 
   }
 }
 
-exports.write = ({ url, method, postData, body, workDir, skipQueryParams, force, ci }) => {
-  const names = getNames(url, method, postData, workDir, skipQueryParams)
+exports.write = ({ url, method, postData, body, workDir, skipQueryParams, skipPostParams, force, ci }) => {
+  const names = getNames(url, method, postData, workDir, skipQueryParams, skipPostParams)
 
   return makeDir(names.targetDir).then(() => {
     return new Promise((resolve, reject) => {
@@ -75,3 +88,5 @@ exports.read = ({ url, method, postData, workDir, skipQueryParams }) => {
     }
   })
 }
+
+exports.__mfn = mfn

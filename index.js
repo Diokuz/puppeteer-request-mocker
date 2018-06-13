@@ -13,6 +13,7 @@ const defaultParams = {
   namespace: '__mocks__',
   page: typeof page === 'undefined' ? null : page,
   skipQueryParams: [],
+  skipPostParams: [],
   okList: [],
   mockList: [],
   force: false,
@@ -52,7 +53,7 @@ function mock (paramsArg) {
   }
 
   if (pagesSet.has(localPage)) {
-    throw new Error('Second mock call on the same page! Probably you forgot to restore previous mock.')
+    throw new Error('Second "mocker.start()" call on the same page! Probably you didn\'t call "mocker.stop()".')
   }
 
   pagesSet.add(localPage)
@@ -84,7 +85,11 @@ function mock (paramsArg) {
     }
 
     storage
-      .read({ url, method, postData, workDir, skipQueryParams: params.skipQueryParams })
+      .read({
+        url, method, postData, workDir,
+        skipQueryParams: params.skipQueryParams,
+        skipPostParams: params.skipPostParams,
+      })
       .then((data) => {
         const body = data.substring(data.indexOf('\n\n') + 2)
 
@@ -125,6 +130,7 @@ function mock (paramsArg) {
           body: `${method.toUpperCase()} ${url} ${postData}\n\n${text}`,
           workDir,
           skipQueryParams: params.skipQueryParams,
+          skipPostParams: params.skipPostParams,
           force,
           ci,
         })
