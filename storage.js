@@ -9,6 +9,8 @@ const mfn = (url, method = 'GET', postDataArg = '', skipQueryParams = [], skipPo
   let postData = postDataArg
   let postObj
 
+  urlObj.searchParams.sort()
+
   try {
     postObj = JSON.parse(postData)
   } catch (e) {
@@ -34,7 +36,8 @@ const mfn = (url, method = 'GET', postDataArg = '', skipQueryParams = [], skipPo
 
 const getNames = (url, method, postData = '', workDir, skipQueryParams = [], skipPostParams = []) => {
   const { hostname, pathname, protocol } = new URL(url)
-  const targetDir = path.join(workDir, `${hostname}${pathname.replace(/\//g, '-')}`)
+  const dirName = pathname.replace(/\//g, '-').replace(/^-|-$/g, '')
+  const targetDir = path.join(workDir, `${hostname}${dirName ? '-' + dirName : ''}`)
   const fileName = mfn(url, method, postData, skipQueryParams, skipPostParams)
   const absFileName = path.join(targetDir, fileName)
 
@@ -90,3 +93,4 @@ exports.read = ({ url, method, postData, workDir, skipQueryParams }) => {
 }
 
 exports.__mfn = mfn
+exports.__getNames = getNames
