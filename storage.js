@@ -74,8 +74,8 @@ exports.write = ({ url, method, postData, body, workDir, skipQueryParams, skipPo
   })
 }
 
-exports.read = ({ url, method, postData, workDir, skipQueryParams }) => {
-  const names = getNames(url, method, postData, workDir, skipQueryParams)
+exports.read = ({ url, method, postData, workDir, skipQueryParams, skipPostParams }) => {
+  const names = getNames(url, method, postData, workDir, skipQueryParams, skipPostParams)
 
   return new Promise((resolve, reject) => {
     try {
