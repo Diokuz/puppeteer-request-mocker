@@ -3,6 +3,7 @@ const path =  require('path')
 const { URL } =  require('url')
 const crypto =  require('crypto')
 const makeDir = require('make-dir')
+const argv = require('yargs').argv
 
 const storage = require('./storage')
 
@@ -17,7 +18,7 @@ const defaultParams = {
   okList: [],
   mockList: [],
   force: false,
-  ci: false,
+  ci: argv.ci,
   verbose: false,
 }
 
@@ -103,10 +104,11 @@ function mock (paramsArg) {
         })
       })
       .catch((err) => {
-        // mock is not exist for now
-        // console.error(err)
-
-        interceptedRequest.continue()
+        if (ci) {
+          throw new Error(`Mock not found. Url "${url}" wasnt mocked!`)
+        } else {
+          interceptedRequest.continue()
+        }
       })
   }
 

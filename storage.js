@@ -55,7 +55,7 @@ exports.write = ({ url, method, postData, body, workDir, skipQueryParams, skipPo
       fs.stat(names.absFileName, (err, stats) => {
         if (err && err.code === 'ENOENT' || force) {
           if (ci) {
-            reject(Error(`Url "${url}" wasnt mocked!`))
+            reject(Error(`Mock cannot be saved in CI mode. Url "${url}" wasnt mocked!`))
           }
 
           fs.writeFile(names.absFileName, body, (err) => {
