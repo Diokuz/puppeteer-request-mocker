@@ -105,7 +105,7 @@ function mock (paramsArg) {
       })
       .catch((err) => {
         if (ci) {
-          throw new Error(`Mock not found. Url "${url}" wasnt mocked!`)
+          throw new Error(`Mock not found. Url "${url}" wasnt mocked! Post body: ${JSON.stringify(postData)}`)
         } else {
           interceptedRequest.continue()
         }
