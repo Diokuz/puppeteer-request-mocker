@@ -84,10 +84,10 @@ exports.read = ({ url, method, postData, workDir, skipQueryParams, skipPostParam
           reject(err)
         }
 
-        resolve(data)
+        resolve({ names, err })
       })
-    } catch (e) {
-      reject(e)
+    } catch (err) {
+      reject({ names, err })
     }
   })
 }
