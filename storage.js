@@ -81,10 +81,10 @@ exports.read = ({ url, method, postData, workDir, skipQueryParams, skipPostParam
     try {
       fs.readFile(names.absFileName, 'utf8', (err, data) => {
         if (err) {
-          reject(err)
+          reject({ names, err })
         }
 
-        resolve({ names, err })
+        resolve(data)
       })
     } catch (err) {
       reject({ names, err })
