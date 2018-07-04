@@ -24,8 +24,11 @@
   },
   "homepage": "https://github.com/Diokuz/puppeteer-request-mocker#readme",
   "dependencies": {
+    "boxen": "^1.3.0",
     "crypto": "^1.0.1",
     "make-dir": "^1.3.0",
+    "yamlify-object": "^0.5.1",
+    "yamlify-object-colors": "^1.0.3",
     "yargs": "^11.0.0"
   },
   "devDependencies": {
