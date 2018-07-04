@@ -252,10 +252,11 @@ exports.stop = () => {
       }, 15 * 1000)
 
       const intervalId = setInterval(() => {
-        if (r.params.verbose) {
-          console.log(`Waiting for requests...`)
-          console.log('reqSet', [...reqSet])
-        }
+        // @todo
+        // if (r.params.verbose) {
+        //   console.log(`Waiting for requests...`)
+        //   console.log('reqSet', [...reqSet])
+        // }
 
         if (reqSet.size === 0) {
           clearTimeout(timeId)
