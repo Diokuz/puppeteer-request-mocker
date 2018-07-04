@@ -193,11 +193,12 @@ function mock (paramsArg) {
           force,
           ci,
           verbose
-        }).then((e) => reqSet.delete(e.names.absFileName))
+        })
       })
       .catch((err) => {
         console.error('interceptedResponse.text error:', err)
       })
+      .then((e) => reqSet.delete(e.names.absFileName))
   }
 
   return makeDir(workDir)
@@ -248,6 +249,7 @@ exports.stop = () => {
         console.error(`Some requests didn't finished`)
         console.log('reqSet', [...reqSet])
         clearInterval(intervalId)
+        restore()
         reject()
       }, 15 * 1000)
 
@@ -270,6 +272,6 @@ exports.stop = () => {
     // @todo verbose
     // console.log(`Mocker successfully stopped`)
   }).catch(() => {
-    console.error(`Mocker failed to stop`)
+    console.error(`Mocker failed to stop properly`)
   })
 }
