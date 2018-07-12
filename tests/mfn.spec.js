@@ -1,4 +1,4 @@
-const mfn = require('../storage').__mfn
+const mfn = require('../lib/storage').__mfn
 
 it('Generates same names for same request', () => {
   const name1 = mfn('http://example.com')

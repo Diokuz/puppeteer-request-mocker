@@ -3,6 +3,5 @@ node_modules/
 .vscode
 npm-debug.log*
 .DS_Store
-lib
 coverage
 *.sublime*
