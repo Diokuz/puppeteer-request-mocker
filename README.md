@@ -9,7 +9,7 @@ If you are writing puppeteer tests, and you want to mock your network responses 
 ```js
 import mocker from 'puppeteer-request-mocker'
 
-await mocker.run()
+await mocker.start()
 
 // async stuff which is making requests
 
@@ -28,14 +28,14 @@ Second, `puppeteer-request-mocker` intercepts all responds, and writes them to t
 
 You could use `options`
 ```js
-mocker.run(options)
+mocker.start(options)
 ```
 All options are optional (that's why they called so).
 ```js
 const options = {
   // Absolute path to folder where you want to store mocks
-  // process.cwd() + '/__mocks__' by default
-  rootDir: __dirname,
+  // process.cwd() + '/__remocks__' by default
+  workDir: __dirname,
 
   // puppeteer page
   // global.page by default
@@ -71,4 +71,4 @@ const options = {
 }
 ```
 
-Both `mocker.run()` and `mocker.stop()` return a `new Promise()`.
+Both `mocker.start()` and `mocker.stop()` return a `Promise`.

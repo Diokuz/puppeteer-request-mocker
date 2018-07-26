@@ -1,4 +1,4 @@
-const getNames = require('../storage').__getNames
+const getNames = require('../lib/storage').__getNames
 
 // url, method, postData = '', workDir, skipQueryParams = [], skipPostParams = []
 
