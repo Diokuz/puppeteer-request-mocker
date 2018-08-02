@@ -4,7 +4,7 @@
   "description": "puppeteer request mocker",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest"
+    "jest": "jest"
   },
   "repository": {
     "type": "git",
@@ -26,12 +26,17 @@
   "dependencies": {
     "boxen": "^1.3.0",
     "crypto": "^1.0.1",
+    "debug": "^3.1.0",
     "make-dir": "^1.3.0",
     "yamlify-object": "^0.5.1",
     "yamlify-object-colors": "^1.0.3",
     "yargs": "^11.0.0"
   },
   "devDependencies": {
-    "jest": "^23.1.0"
+    "express": "^4.16.3",
+    "jest": "^23.1.0",
+    "puppeteer": "^1.6.2",
+    "rimraf": "^2.6.2",
+    "wait-port": "^0.2.2"
   }
 }
