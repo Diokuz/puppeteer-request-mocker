@@ -35,9 +35,7 @@ describe('connections', () => {
     // * Starting mocker
     await mocker.start({
       page,
-      mockList: [
-        'localhost:3000/api',
-      ],
+      mockList: 'localhost:3000/api',
     })
 
     // * Typing `abcd` → invoking request to `/api`
@@ -63,9 +61,7 @@ describe('connections', () => {
     // * Starting mocker
     await mocker.start({
       page,
-      mockList: [
-        'localhost:3000/api',
-      ],
+      mockList: 'localhost:3000/api',
     })
 
     // * Typing `abc` → invoking request to `/api`, which are mocked
@@ -88,7 +84,7 @@ describe('connections', () => {
     // * Starting mocker with void mockList
     await mocker.start({
       page,
-      mockList: [],
+      mockList: null,
     })
 
     // * Typing `abc` → invoking request to `/api`, which is not mocked
@@ -102,5 +98,34 @@ describe('connections', () => {
 
     // @todo await expect(mocker.connections()).resolves.toEqual(undefined)
     await expect(mocker.stop()).resolves.toEqual(undefined)
+  })
+
+  it.skip('Fails in CI mode when no mock found', async () => {
+    await page.goto('http://localhost:3000')
+
+    // * Starting mocker with void mockList
+    await mocker.start({
+      page,
+      mockList: 'localhost:3000/api',
+      ci: true,
+    })
+
+    try {
+      // * Typing `abc` → invoking request to `/api`, which is not mocked
+      await page.click('#input')
+      await page.keyboard.type('x')
+
+      // await page.waitForFunction(() => {
+      //   return document.querySelector('.suggest').innerText === 'suggest: unknown'
+      // }, { timeout: 4000 })
+      await expect(mocker.stop()).resolves.toEqual(undefined)
+    } catch (e) {
+      console.log('eee', e)
+    }
+
+    process.on('uncaughtException', e => console.log('xxx', e))
+
+    // @todo await expect(mocker.connections()).resolves.toEqual(undefined)
+    // await expect(mocker.stop()).resolves.toEqual(undefined)
   })
 })
