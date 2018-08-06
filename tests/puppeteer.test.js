@@ -19,7 +19,6 @@ describe('connections', () => {
     })
 
     page = await browser.newPage()
-    rimraf.sync(path.resolve(__dirname, '../__remocks__'))
     server = spawn('node', [serverPath])
     await waitPort({ host: 'localhost', port: 3000 })
   })
@@ -30,6 +29,7 @@ describe('connections', () => {
   })
 
   it('Generates mocks', async () => {
+    rimraf.sync(path.resolve(__dirname, '../__remocks__'))
     await page.goto('http://localhost:3000')
 
     // * Starting mocker
@@ -47,10 +47,13 @@ describe('connections', () => {
     expect(fs.existsSync(mockFilePath)).toBe(false)
 
     // * mocker.stop waits for all connections
-    await mocker.stop()
+    await mocker.connections()
 
     // * At that point there must be mock files
     expect(fs.existsSync(mockFilePath)).toBe(true)
+
+    // * stopping the mocker
+    await mocker.stop()
 
     // await page.screenshot({ path: 'screenshots/github.png' })
   })
@@ -96,36 +99,61 @@ describe('connections', () => {
       return document.querySelector('.suggest').innerText === 'suggest: example'
     }, { timeout: 4000 })
 
-    // @todo await expect(mocker.connections()).resolves.toEqual(undefined)
-    await expect(mocker.stop()).resolves.toEqual(undefined)
+    // * All connections must resolves after theirs completion
+    await expect(mocker.connections()).resolves.toEqual(undefined)
+
+    // * Stopping the mocker
+    await mocker.stop()
   })
 
-  it.skip('Fails in CI mode when no mock found', async () => {
+  it('Resolves `stop` even when no requests from mockList were made', async () => {
     await page.goto('http://localhost:3000')
 
     // * Starting mocker with void mockList
     await mocker.start({
       page,
-      mockList: 'localhost:3000/api',
-      ci: true,
+      mockList: null,
     })
 
-    try {
-      // * Typing `abc` → invoking request to `/api`, which is not mocked
-      await page.click('#input')
-      await page.keyboard.type('x')
+    // * Typing `abc` → invoking request to `/api`, which is not mocked
+    await page.click('#input')
+    await page.keyboard.type('a')
 
-      // await page.waitForFunction(() => {
-      //   return document.querySelector('.suggest').innerText === 'suggest: unknown'
-      // }, { timeout: 4000 })
-      await expect(mocker.stop()).resolves.toEqual(undefined)
-    } catch (e) {
-      console.log('eee', e)
-    }
+    // * Awaiting for real response and its corresponding reaction (text `suggest: example` must appear)
+    await page.waitForFunction(() => {
+      return document.querySelector('.suggest').innerText === 'suggest: example'
+    }, { timeout: 4000 })
 
-    process.on('uncaughtException', e => console.log('xxx', e))
+    await expect(mocker.stop()).resolves.toEqual(undefined)
+  })
 
-    // @todo await expect(mocker.connections()).resolves.toEqual(undefined)
-    // await expect(mocker.stop()).resolves.toEqual(undefined)
+  it('Fails `connections` in CI mode when no mock found', async () => {
+    await page.goto('http://localhost:3000')
+
+    // * Starting mocker with void mockList
+    await mocker.start({ page, mockList: 'localhost:3000/api', ci: true })
+
+    // * Typing `abc` → invoking request to `/api`, which is not mocked
+    await page.click('#input')
+    await page.keyboard.type('x')
+
+    // * Expecting `connections` promise to reject, because no `mock file not found` (MONOFO)
+    await expect(mocker.connections()).rejects.toEqual('MONOFO')
+
+    await mocker.stop().catch(() => null)
+  })
+
+  it('Fails `stop` in CI mode when no mock found', async () => {
+    await page.goto('http://localhost:3000')
+
+    // * Starting mocker with void mockList
+    await mocker.start({ page, mockList: 'localhost:3000/api', ci: true })
+
+    // * Typing `abc` → invoking request to `/api`, which is not mocked
+    await page.click('#input')
+    await page.keyboard.type('x')
+
+    // * Expecting `stop` promise to reject, because no `mock file not found` (MONOFO)
+    await expect(mocker.stop()).rejects.toEqual('MONOFO')
   })
 })
