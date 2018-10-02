@@ -74,6 +74,7 @@ it('Generates same filenames for different skipped query params', () => {
     'GET',
     '',
     '/diokuz/dir',
+    [],
     ['random']
   )
   const names2 = getNames(
@@ -81,6 +82,7 @@ it('Generates same filenames for different skipped query params', () => {
     'GET',
     '',
     '/diokuz/dir',
+    [],
     ['random']
   )
 
@@ -94,6 +96,7 @@ it('Generates same filenames for different order of query params', () => {
     'GET',
     '',
     '/diokuz/dir',
+    [],
     ['random']
   )
   const names2 = getNames(
@@ -119,8 +122,8 @@ it('Generates same filenames for different skipped post bodies', () => {
   const spp = ['randomId', 'timestamp']
   const b1 = JSON.stringify({ id: 1, randomId: 2, timestamp: 123 })
   const b2 = JSON.stringify({ id: 1, randomId: 3, timestamp: 321 })
-  const names1 = getNames('http://example.com', 'POST', b1, '/diokuz/dir', [], spp)
-  const names2 = getNames('http://example.com', 'POST', b2, '/diokuz/dir', [], spp)
+  const names1 = getNames('http://example.com', 'POST', b1, '/diokuz/dir', [], [], spp)
+  const names2 = getNames('http://example.com', 'POST', b2, '/diokuz/dir', [], [], spp)
 
   expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-5b9e6a38')
   expect(names1.absFileName).toBe(names2.absFileName)

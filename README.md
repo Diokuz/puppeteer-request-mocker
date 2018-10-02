@@ -41,8 +41,13 @@ const options = {
   // global.page by default
   page: page,
 
+  // In some cases you could have some random GET params, which are not affect the response body
+  // but several params may be important for you (White List)
+  // [] by default
+  queryParams: ['important'],
+
   // In some cases you could have some random GET params, which are not affects the response body
-  // but could lead to `always out of date` mocks
+  // but could lead to `always out of date` mocks (Black List)
   // [] by default
   skipQueryParams: ['randomId', 'timestamp'],
 
