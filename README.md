@@ -49,7 +49,7 @@ const options = {
   // In some cases you could have some random GET params, which are not affects the response body
   // but several params may be important for you 
   // [] by default
-  skipAllQueryParamsExcept: ['important'],
+  queryParams: ['important'],
   // Same as skipQueryParams but for post body params
   // Only application/json MIME type is supported
   skipPostParams: ['randomId', 'timestamp'],
