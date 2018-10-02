@@ -40,19 +40,19 @@ it('unnecessary params bigger than 1 does not affect output name', () => {
 it('queryParams > 1 does not affect output name', () => {
   const m = 'GET'
   const p = ''
-  const queryParams = ['foo', 'bar']
-  const name1 = mfn('http://example.com?foo=bar&bar=foo&x=y', m, p, queryParams)
-  const name2 = mfn('http://example.com?bar=foo&foo=bar', m, p, queryParams)
+  const queryParams = ['foo', 'trois']
+  const name1 = mfn('http://example.com?foo=bar&trois=quatre&x=y', m, p, queryParams)
+  const name2 = mfn('http://example.com?trois=quatre&foo=bar', m, p, queryParams)
   expect(name1).toBe(name2)
 })
 
 it('skip params from queryParams does not affect output name', () => {
   const m = 'GET'
   const p = ''
-  const queryParams = ['foo', 'bar']
+  const queryParams = ['foo', 'trois']
   const skipQueryParams = ['foo']
-  const name1 = mfn('http://example.com?foo=bar&bar=foo&x=y', m, p, queryParams, skipQueryParams)
-  const name2 = mfn('http://example.com?bar=foo&foo=bar', m, p, queryParams, skipQueryParams)
+  const name1 = mfn('http://example.com?foo=bar&trois=quatre&x=y', m, p, queryParams, skipQueryParams)
+  const name2 = mfn('http://example.com?trois=quatre&foo=bar', m, p, queryParams, skipQueryParams)
   expect(name1).toBe(name2)
 })
 
