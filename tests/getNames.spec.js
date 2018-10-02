@@ -74,6 +74,7 @@ it('Generates same filenames for different skipped query params', () => {
     'GET',
     '',
     '/diokuz/dir',
+    [],
     ['random']
   )
   const names2 = getNames(
@@ -81,6 +82,7 @@ it('Generates same filenames for different skipped query params', () => {
     'GET',
     '',
     '/diokuz/dir',
+    [],
     ['random']
   )
 
@@ -94,6 +96,7 @@ it('Generates same filenames for different order of query params', () => {
     'GET',
     '',
     '/diokuz/dir',
+    [],
     ['random']
   )
   const names2 = getNames(
