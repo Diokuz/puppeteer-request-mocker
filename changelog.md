@@ -1,3 +1,6 @@
+## 1.0.1
+- Fix "failed to stop mocker" error
+
 ## 0.10.0
 
 - Rework mocker.connections() to support mocked connections
