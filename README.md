@@ -7,7 +7,7 @@ If you are writing puppeteer tests, and you want to mock your network responses 
 ## How to use
 
 ```js
-import mocker from 'puppeteer-request-mocker'
+import mocker from 'puppeteer-rq'
 
 await mocker.start()
 
@@ -15,14 +15,6 @@ await mocker.start()
 
 await mocker.stop()
 ```
-
-## How it works
-
-First, `puppeteer-request-mocker` intercepts puppeteers page requests and tries to find its body in mocks folder. Generated filename depends on `url`, `method` and `postBody` – so, you always know, do you have a mock for that particular request or not. If you have it – you will get it as a response, instantly. If not – request will go to the real backend (see also: mockList and okList).
-
-Second, `puppeteer-request-mocker` intercepts all responds, and writes them to the filesystem, if they are not on it already. In case of `CI` (and if mock was not found), it throws an error, so you could be sure – all your requests are mocked (or build will fail otherwise).
-
-`puppeteer-request-mocker` only listening for whitelisted domains (which are _all except localhost_ by default).
 
 ## API
 
@@ -33,46 +25,11 @@ mocker.start(options)
 All options are optional (that's why they called so).
 ```js
 const options = {
-  // Absolute path to folder where you want to store mocks
-  // process.cwd() + '/__remocks__' by default
-  workDir: __dirname,
-
   // puppeteer page
   // global.page by default
   page: page,
 
-  // In some cases you could have some random GET params, which are not affect the response body
-  // but several params may be important for you (White List)
-  // [] by default
-  queryParams: ['important'],
-
-  // In some cases you could have some random GET params, which are not affects the response body
-  // but could lead to `always out of date` mocks (Black List)
-  // [] by default
-  skipQueryParams: ['randomId', 'timestamp'],
-
-  // Same as skipQueryParams but for post body params
-  // Only application/json MIME type is supported
-  skipPostParams: ['randomId', 'timestamp'],
-
-  // Probably you dont want to mock some requests (e.g. cdn js files)
-  // And you definitely dont want to mock your webapp requests (e.g. localhost/app.js)
-  // So, you could explicitly whitelist urls you want to mock
-  // _all except localhost_ if both – mockList and okList – were not set
-  // Could be an array, or a `,` delimited string
-  mockList: 'my-backend.org/used/by/test',
-
-  // It is recommended to explicitly mock only _critical-for-your-test_ urls
-  // But you could also mock with simple 200-OK response some other requests,
-  // which are not critical, but should be intercepted
-  // (to prevent ddos-effect to your real backend, for example)
-  // All items from mockList have higher priority over okList
-  // Could be an array, or a `,` delimited string
-  okList: ['my-backend.org/not/critical/for/test'],
-
-  // Run as CI if true. That means, your tests will fail if any of the requests were not mocked
-  // Default is `is-ci` package value (same as in Jest)
-  ci: require('is-ci'),
+  mockList: {'my-backend.org/used/by/test': 'mockFilePath' } ,
 }
 ```
 

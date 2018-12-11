@@ -35,7 +35,6 @@
     "yargs": "^11.0.0"
   },
   "devDependencies": {
-    "express": "^4.16.3",
     "jest": "^23.1.0",
     "puppeteer": "^1.6.2",
     "rimraf": "^2.6.2",

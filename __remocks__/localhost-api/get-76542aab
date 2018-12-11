@@ -1,3 +1,0 @@
-GET http://localhost:3000/api?q=a 
-
-{"suggest":"example"}
