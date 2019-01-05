@@ -1,3 +1,6 @@
+## 1.0.3
+- Add mockMiss option
+
 ## 1.0.2
 - Add rejection when in non-ci mode connections are not finished before next onload
 - Replace logger with console.error in most critical cases
