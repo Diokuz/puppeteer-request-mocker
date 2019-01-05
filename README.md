@@ -73,6 +73,16 @@ const options = {
   // Run as CI if true. That means, your tests will fail if any of the requests were not mocked
   // Default is `is-ci` package value (same as in Jest)
   ci: require('is-ci'),
+
+  // A middleware to call when mock is not found on the file system
+  // Works only in CI mode
+  // Possible values are:
+  // 1) 'throw' (string, default) – will throw an error
+  // 2) CODE (number) – respond with CODE http code for any unmocked request (e.g. 200)
+  // 3) (next) => next(anyResponse) - respond with anyResponse object
+  // Note: request is not available in the middleware function
+  // Note: body must be a string (use JSON.stringify for objects)
+  mockMiss: (next) => next({ code: 200, body: JSON.stringify({ foo: 'bar' }) }),
 }
 ```
 

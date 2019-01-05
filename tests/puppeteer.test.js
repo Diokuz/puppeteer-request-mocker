@@ -19,13 +19,16 @@ describe('connections', () => {
     })
 
     page = await browser.newPage()
-    server = spawn('node', [serverPath])
+    // Cant kill if detached: false (for reasons unknown)
+    // Probably https://azimi.me/2014/12/31/kill-child_process-node-js.html
+    server = spawn('node', [serverPath], { detached: true })
     await waitPort({ host: 'localhost', port: 3000 })
   })
 
   afterAll(async () => {
     await browser.close()
-    server.kill()
+    // server.kill()
+    process.kill(-server.pid)
   })
 
   it('Generates mocks', async () => {
@@ -133,7 +136,7 @@ describe('connections', () => {
     // * Starting mocker with void mockList
     await mocker.start({ page, mockList: 'localhost:3000/api', ci: true })
 
-    // * Typing `abc` → invoking request to `/api`, which is not mocked
+    // * Typing `x` → invoking request to `/api`, which is not mocked
     await page.click('#input')
     await page.keyboard.type('x')
 
@@ -149,11 +152,76 @@ describe('connections', () => {
     // * Starting mocker with void mockList
     await mocker.start({ page, mockList: 'localhost:3000/api', ci: true })
 
-    // * Typing `abc` → invoking request to `/api`, which is not mocked
+    // * Typing `x` → invoking request to `/api`, which is not mocked
     await page.click('#input')
     await page.keyboard.type('x')
 
     // * Expecting `stop` promise to reject, because no `mock file not found` (MONOFO)
     await expect(mocker.stop()).rejects.toEqual('MONOFO')
   })
+
+  describe('mockMiss', () => {
+    it('Do not throws in CI with mockMiss === 200', async () => {
+      await page.goto('http://localhost:3000')
+
+      // * Starting mocker with void mockList
+      await mocker.start({ page, mockList: 'localhost:3000/api', ci: true, mockMiss: 200 })
+
+      // * Typing `x` → invoking request to `/api`, which is not mocked
+      await page.click('#input')
+      await page.keyboard.type('x')
+
+      // * Expecting `stop` promise to resolve, because mockMiss is number
+      await expect(mocker.stop()).resolves.toEqual()
+    })
+
+    it('Uses mockMiss middleware for response', async () => {
+      await page.goto('http://localhost:3000')
+
+      // * Starting mocker with void mockList
+      await mocker.start({
+        page,
+        mockList: 'localhost:3000/api',
+        ci: true,
+        mockMiss: (next) => next({ body: JSON.stringify({ suggest: 'mockMiss_middleware' }) }),
+      })
+
+      // * Typing `x` → invoking request to `/api`, which is not mocked
+      await page.click('#input')
+      await page.keyboard.type('x')
+
+      // * Awaiting for middlware response and its body in suggest div
+      await page.waitForFunction(() => {
+        return document.querySelector('.suggest').innerText === 'suggest: mockMiss_middleware'
+      }, { timeout: 4000 })
+
+      // * Expecting `stop` promise to resolve, because mockMiss is function
+      await expect(mocker.stop()).resolves.toEqual()
+    })
+
+    it('Must not use mockMiss function if mock exists', async () => {
+      await page.goto('http://localhost:3000')
+
+      // * Starting mocker with void mockList
+      await mocker.start({
+        page,
+        mockList: 'localhost:3000/api',
+        ci: true,
+        mockMiss: (next) => next({ body: JSON.stringify({ suggest: 'mockMiss_middleware' }) }),
+      })
+
+      // * Typing `x` → invoking request to `/api`, which is not mocked
+      await page.click('#input')
+      await page.keyboard.type('abc')
+
+      // * Awaiting for middlware response and its body in suggest div
+      await page.waitForFunction(() => {
+        return document.querySelector('.suggest').innerText === 'suggest: green'
+      }, { timeout: 4000 })
+
+      // * Expecting `stop` promise to resolve
+      await expect(mocker.stop()).resolves.toEqual()
+    })
+  })
+
 })
