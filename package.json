@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-rq",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "puppeteer request mocker",
   "main": "lib/index.js",
   "scripts": {
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "jest": "^23.1.0",
-    "puppeteer": "^1.6.2",
+    "puppeteer": "1.13.0",
     "rimraf": "^2.6.2",
     "wait-port": "^0.2.2"
   },
