@@ -53,18 +53,18 @@ it('Skipped post body params for request with content-type="application/json" do
   const method = 'POST'
   const skipPostParams = ['foo']
   const headers = {"content-type": "application/json"}
-  const name1 = mfn({ 
-    url: 'http://example.com', 
-    method, 
-    headers, 
-    postData: JSON.stringify({ foo: 'bar', x: 2 }), 
+  const name1 = mfn({
+    url: 'http://example.com',
+    method,
+    headers,
+    postData: JSON.stringify({ foo: 'bar', x: 2 }),
     skipPostParams
   })
   const name2 = mfn({
-    url: 'http://example.com', 
-    method, 
-    headers, 
-    postData: JSON.stringify({ foo: 'bazzzz', x: 2 }), 
+    url: 'http://example.com',
+    method,
+    headers,
+    postData: JSON.stringify({ foo: 'bazzzz', x: 2 }),
     skipPostParams
   })
 
@@ -76,17 +76,17 @@ it('Skipped post body params for request with content-type="application/x-www-fo
   const headers = {"content-type": "application/x-www-form-urlencoded"}
 
   const name1 = mfn({
-    url: 'http://example.com', 
-    method: 'POST', 
-    headers, 
-    postData: "foo=bar&x=2", 
+    url: 'http://example.com',
+    method: 'POST',
+    headers,
+    postData: "foo=bar&x=2",
     skipPostParams
   })
   const name2 = mfn({
-    url: 'http://example.com', 
-    method: 'POST', 
-    headers, 
-    postData: "foo=bazzzz&x=2", 
+    url: 'http://example.com',
+    method: 'POST',
+    headers,
+    postData: "foo=bazzzz&x=2",
     skipPostParams
   })
 
@@ -98,17 +98,17 @@ it('Skipped post body params for request without content-type affects output nam
   const skipPostParams = ['foo']
   const headers = {}
   const name1 = mfn({
-    url: 'http://example.com', 
-    method, 
-    headers, 
+    url: 'http://example.com',
+    method,
+    headers,
     postData: "foo=bar&x=2",
     skipPostParams
   })
   const name2 = mfn({
-    url: 'http://example.com', 
-    method, 
+    url: 'http://example.com',
+    method,
     headers,
-    postData: "foo=bazzzz&x=2", 
+    postData: "foo=bazzzz&x=2",
     skipPostParams
   })
 
@@ -120,21 +120,53 @@ it('Skipped post body params for request with not supported content-type affects
   const skipPostParams = ['foo']
   const headers =  {"content-type": "multipart/form-data"}
   const name1 = mfn({
-    url: 'http://example.com', 
-    method, 
-    headers, 
+    url: 'http://example.com',
+    method,
+    headers,
     postData: "foo=bar&x=2",
     skipPostParams
   })
   const name2 = mfn({
-    url: 'http://example.com', 
-    method, 
-    headers, 
-    postData: "foo=bazzzz&x=2", 
+    url: 'http://example.com',
+    method,
+    headers,
+    postData: "foo=bazzzz&x=2",
     skipPostParams
   })
 
   expect(name1).toBe(name2)
+})
+
+it('Skip nested post body params', () => {
+  const method = 'POST'
+  const skipPostParams = [['foo', 'bar']]
+  const headers = {"content-type": "application/json"}
+  const name1 = mfn({
+    url: 'http://example.com',
+    method,
+    headers,
+    postData: JSON.stringify({ foo: { bar: 1 }, baz: 2 }),
+    skipPostParams
+  })
+  const name2 = mfn({
+    url: 'http://example.com',
+    method,
+    headers,
+    postData: JSON.stringify({ foo: { bar: 2 }, baz: 2 }),
+    skipPostParams
+  })
+
+  expect(name1).toBe(name2)
+})
+
+it('Nonexistent level of nested body parameters does not throw an error', () => {
+  mfn({
+    url: 'http://example.com',
+    method: 'POST',
+    headers:{ 'content-type': 'application/json' },
+    postData: JSON.stringify({ foo: 1 }),
+    skipPostParams: [['foo', 'bar', 'baz']]
+  })
 })
 
 it('Non-json post body does not throws an error', () => {

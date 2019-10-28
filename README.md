@@ -53,7 +53,11 @@ const options = {
 
   // Same as skipQueryParams but for post body params
   // Only application/json MIME type is supported
-  skipPostParams: ['randomId', 'timestamp'],
+  skipPostParams: [
+      'randomId',
+      'timestamp',
+      ['objectParameter', 'property']
+  ],
 
   // Probably you dont want to mock some requests (e.g. cdn js files)
   // And you definitely dont want to mock your webapp requests (e.g. localhost/app.js)
