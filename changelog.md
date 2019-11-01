@@ -1,3 +1,8 @@
+## 1.4.0
+
+- Add nested postParams for skip
+- Clear reqSet on close instead of on load
+
 ## 1.0.3
 - Add mockMiss option
 
