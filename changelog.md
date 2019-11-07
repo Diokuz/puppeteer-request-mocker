@@ -1,3 +1,8 @@
+## 2.0.0
+
+- Change `mockMiss` default value to `500`
+- add options.awaitConnectionsOnStop, no timeouted _Failed to stop mocker_ error by default
+
 ## 1.4.0
 
 - Add nested postParams for skip
