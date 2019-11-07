@@ -87,6 +87,9 @@ const options = {
   // Note: request is not available in the middleware function
   // Note: body must be a string (use JSON.stringify for objects)
   mockMiss: (next) => next({ code: 200, body: JSON.stringify({ foo: 'bar' }) }),
+
+  // Set true, to await all non-closed connections when trying to stop mocker
+  awaitConnectionsOnStop: false,
 }
 ```
 
