@@ -1,3 +1,8 @@
+## 3.0.0
+
+- add passList option
+- breaking: blocks any cross origin and all non-GET same origin requests by default
+
 ## 2.1.0
 
 - mocker.connections() marked as depreceated

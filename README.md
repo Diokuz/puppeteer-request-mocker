@@ -24,6 +24,10 @@ Second, `puppeteer-request-mocker` intercepts all responds, and writes them to t
 
 `puppeteer-request-mocker` only listening for whitelisted domains (which are _all except localhost_ by default).
 
+## Pipeline
+
+<img src="assets/pipeline.svg" />
+
 ## API
 
 You could use `options`
@@ -74,6 +78,12 @@ const options = {
   // Could be an array, or a `,` delimited string
   okList: ['my-backend.org/not/critical/for/test'],
 
+  // If url not in mockList, nor okList, it will be blocked, unless any of two conditions
+  // 1) url is same origin, and method is GET
+  // 2) url is matched agains any string in passList
+  // By default, block any cross origin and non-GET same-origin requests
+  passList: [],
+
   // Run as CI if true. That means, your tests will fail if any of the requests were not mocked
   // Default is `is-ci` package value (same as in Jest)
   ci: require('is-ci'),
@@ -92,6 +102,8 @@ const options = {
   // Set true, to await all non-closed connections when trying to stop mocker
   // Warning: some tests could became flaky
   awaitConnectionsOnStop: false,
+
+
 }
 ```
 
