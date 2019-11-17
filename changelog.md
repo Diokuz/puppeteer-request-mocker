@@ -1,3 +1,7 @@
+## 2.1.0
+
+- mocker.connections() marked as depreceated
+
 ## 2.0.0
 
 - Change `mockMiss` default value to `500`
