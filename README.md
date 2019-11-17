@@ -81,14 +81,16 @@ const options = {
   // A middleware to call when mock is not found on the file system
   // Works only in CI mode
   // Possible values are:
-  // 1) 'throw' (string, default) – will throw an error
-  // 2) CODE (number) – respond with CODE http code for any unmocked request (e.g. 200)
+  // 1) CODE (number) – respond with CODE http code for any unmocked request (e.g. 200)
+  // 2) 'throw' (string) – will throw an error
   // 3) (next) => next(anyResponse) - respond with anyResponse object
+  // default value is: 500
   // Note: request is not available in the middleware function
   // Note: body must be a string (use JSON.stringify for objects)
   mockMiss: (next) => next({ code: 200, body: JSON.stringify({ foo: 'bar' }) }),
 
   // Set true, to await all non-closed connections when trying to stop mocker
+  // Warning: some tests could became flaky
   awaitConnectionsOnStop: false,
 }
 ```
