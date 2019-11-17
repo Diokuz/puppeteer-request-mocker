@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-request-mocker",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "puppeteer request mocker",
   "main": "lib/index.js",
   "repository": {
@@ -21,15 +21,11 @@
   },
   "homepage": "https://github.com/Diokuz/puppeteer-request-mocker#readme",
   "dependencies": {
-    "boxen": "^4.1.0",
     "crypto": "^1.0.1",
     "debug": "^4.1.1",
     "is-ci": "^2.0.0",
     "make-dir": "^3.0.0",
-    "query-string": "^6.8.3",
-    "yamlify-object": "^0.5.1",
-    "yamlify-object-colors": "^1.0.3",
-    "yargs": "^14.2.0"
+    "query-string": "^6.8.3"
   },
   "devDependencies": {
     "express": "^4.17.1",
