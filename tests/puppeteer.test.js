@@ -84,7 +84,7 @@ describe('connections', () => {
     // * So, page reaction on the response must be within 100 ms
     // * Checking that reaction: there must be a text `green` in the suggest div
     await page.waitForFunction(() => {
-      return document.querySelector('.suggest').innerText === 'suggest: green'
+      return document.querySelector('#suggest').innerText === 'suggest: green'
     }, { timeout: 100 })
 
     await mocker.stop()
@@ -105,7 +105,7 @@ describe('connections', () => {
 
     // * Awaiting for real response and its corresponding reaction (text `suggest: example` must appear)
     await page.waitForFunction(() => {
-      return document.querySelector('.suggest').innerText === 'suggest: example'
+      return document.querySelector('#suggest').innerText === 'suggest: example'
     }, { timeout: 4000 })
 
     // * All connections must resolves after theirs completion
@@ -130,7 +130,7 @@ describe('connections', () => {
 
     // * Awaiting for real response and its corresponding reaction (text `suggest: example` must appear)
     await page.waitForFunction(() => {
-      return document.querySelector('.suggest').innerText === 'suggest: example'
+      return document.querySelector('#suggest').innerText === 'suggest: example'
     }, { timeout: 4000 })
 
     await expect(mocker.stop()).resolves.toEqual(undefined)
@@ -183,7 +183,7 @@ describe('connections', () => {
 
       // * Awaiting for middlware response and its body in suggest div
       await page.waitForFunction(() => {
-        return document.querySelector('.suggest').innerText === 'suggest: mockMiss_middleware'
+        return document.querySelector('#suggest').innerText === 'suggest: mockMiss_middleware'
       }, { timeout: 4000 })
 
       // * Expecting `stop` promise to resolve, because mockMiss is function
@@ -207,7 +207,7 @@ describe('connections', () => {
 
       // * Awaiting for middlware response and its body in suggest div
       await page.waitForFunction(() => {
-        return document.querySelector('.suggest').innerText === 'suggest: green'
+        return document.querySelector('#suggest').innerText === 'suggest: green'
       }, { timeout: 4000 })
 
       // * Expecting `stop` promise to resolve
@@ -215,4 +215,78 @@ describe('connections', () => {
     })
   })
 
+  describe('options.passList', () => {
+    it('blocks cross origin requests by default', async () => {
+      await page.goto('http://localhost:3000')
+
+      // * Starting mocker with void passList
+      await mocker.start({ page })
+
+      // * Typing `a` → invoking cors request to `/api`, which must be blocked
+      await page.click('#input-cors')
+      await page.keyboard.type('a')
+
+      // * Awaiting for suggest innerText, which indicates wether request was blocked
+      await page.waitForFunction(() => {
+        return document.querySelector('#suggest-cors').innerText === 'cors request failed'
+      }, { timeout: 1000 })
+
+      await mocker.stop()
+    })
+
+    it('blocks same origin non-GET requests by default', async () => {
+      await page.goto('http://localhost:3000')
+
+      // * Starting mocker with void passList
+      await mocker.start({ page })
+
+      // * Typing `a` → invoking POST request to `/api`, which must be blocked
+      await page.click('#input-post')
+      await page.keyboard.type('a')
+
+      // * Awaiting for suggest innerText, which indicates wether request was blocked
+      await page.waitForFunction(() => {
+        return document.querySelector('#suggest-post').innerText === 'post request failed'
+      }, { timeout: 1000 })
+
+      await mocker.stop()
+    })
+
+    it('dont blocks cross origin request when url in passList', async () => {
+      await page.goto('http://localhost:3000')
+
+      // * Starting mocker with void passList
+      await mocker.start({ page, passList: ['http://localhost:4000'] })
+
+      // * Typing `a` → invoking CORS request to `/api`, which must not be blocked
+      await page.click('#input-cors')
+      await page.keyboard.type('a')
+
+      // * Awaiting for suggest innerText, which indicates wether request was blocked
+      await page.waitForFunction(() => {
+        return document.querySelector('#suggest-cors').innerText === 'suggest: example'
+      }, { timeout: 1000 })
+
+      await mocker.stop()
+    })
+
+    it('dont blocks cross origin request when url in passList, but with query', async () => {
+      await page.goto('http://localhost:3000')
+
+      // * Starting mocker with void passList
+      await mocker.start({ page, passList: ['http://localhost:4000'] })
+
+      // * Typing `a` → invoking CORS request to `/api?q=a`, which must not be blocked
+      await page.click('#input-cors')
+      await page.keyboard.type('a')
+
+      // * Awaiting for suggest innerText, which indicates wether request was blocked
+      await page.waitForFunction(() => {
+        return document.querySelector('#suggest-cors').innerText === 'suggest: example'
+      }, { timeout: 1000 })
+
+      await mocker.stop()
+    })
+  })
 })
+

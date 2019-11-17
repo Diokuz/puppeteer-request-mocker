@@ -2,8 +2,6 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 
-
-
 const app = express()
 
 const suggests = {
@@ -17,8 +15,18 @@ app.get('/api', (req, res) => {
   const q = req.query.q
 
   setTimeout(() => {
+    res.set('Access-Control-Allow-Origin', '*');
     res.json({ suggest: suggests[q] || 'unknown' })
   }, 3000)
+})
+
+app.post('/api', (req, res) => {
+  const q = req.query.q
+
+  setTimeout(() => {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.json({ suggest: suggests[q] || 'unknown' })
+  }, 300)
 })
 
 app.get('/', (req, res) => {
@@ -29,3 +37,4 @@ app.get('/', (req, res) => {
 })
 
 app.listen(3000, () => console.log('http://localhost:3000'))
+app.listen(4000, () => console.log('http://localhost:4000'))
