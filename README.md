@@ -20,9 +20,7 @@ await mocker.stop()
 
 First, `puppeteer-request-mocker` intercepts puppeteers page requests and tries to find its body in mocks folder. Generated filename depends on `url`, `method` and `postBody` – so, you always know, do you have a mock for that particular request or not. If you have it – you will get it as a response, instantly. If not – request will go to the real backend (see also: mockList and okList).
 
-Second, `puppeteer-request-mocker` intercepts all responds, and writes them to the filesystem, if they are not on it already. In case of `CI` (and if mock was not found), it throws an error, so you could be sure – all your requests are mocked (or build will fail otherwise).
-
-`puppeteer-request-mocker` only listening for whitelisted domains (which are _all except localhost_ by default).
+Second, `puppeteer-request-mocker` intercepts all responds, and writes them to the filesystem, if they are not on it already. In case of `CI` (if mock was not found), it uses mockMiss middleware, so you could be sure – all your requests are mocked (or build will fail otherwise).
 
 ## Pipeline
 

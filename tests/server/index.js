@@ -15,7 +15,7 @@ app.get('/api', (req, res) => {
   const q = req.query.q
 
   setTimeout(() => {
-    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Origin', '*')
     res.json({ suggest: suggests[q] || 'unknown' })
   }, 3000)
 })
@@ -24,7 +24,7 @@ app.post('/api', (req, res) => {
   const q = req.query.q
 
   setTimeout(() => {
-    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Origin', '*')
     res.json({ suggest: suggests[q] || 'unknown' })
   }, 300)
 })
