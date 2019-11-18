@@ -36,5 +36,9 @@ app.get('/', (req, res) => {
   res.send(htmlContent)
 })
 
+app.get('/text', (req, res) => {
+  res.send('<div id="text">text</div>')
+})
+
 app.listen(3000, () => console.log('http://localhost:3000'))
 app.listen(4000, () => console.log('http://localhost:4000'))

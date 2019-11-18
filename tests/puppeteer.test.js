@@ -287,6 +287,21 @@ describe('connections', () => {
 
       await mocker.stop()
     })
+
+    it('navigation request should not be blocked', async () => {
+      // * Starting mocker without passList
+      await mocker.start({ page })
+
+      // * Goto 'about:blank' → 'localhost:3000' some url – that url should not be blocked
+      await page.goto('http://localhost:3000')
+      await page.waitFor('#suggest')
+
+      // * Goto 'localhost:3000' → 'localhost:4000/text' some url – that url should not be blocked
+      await page.goto('http://localhost:4000/text')
+      await page.waitFor('#text')
+
+      await mocker.stop()
+    })
   })
 })
 

@@ -1,3 +1,8 @@
+## 3.2.0
+
+- Fix passList: dont block any navigation request
+- pageUrl now could be a function
+
 ## 3.0.0
 
 - add passList option
