@@ -1,3 +1,7 @@
+## 3.3.0
+
+- Add `extra` params for request and response handlers. The only extra param is `workDir`.
+
 ## 3.2.0
 
 - Fix passList: dont block any navigation request
