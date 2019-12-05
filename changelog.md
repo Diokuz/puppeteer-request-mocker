@@ -1,5 +1,9 @@
 # 4.0.0
 
+### breaking: deprecated mocker.run() is removed
+
+Use `mocker.start()` instead.
+
 ### mocker.set() method
 
 You could change any option after mocker.start(). Very usefull when you want to change something in the middle of a test.
