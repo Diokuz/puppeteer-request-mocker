@@ -1,3 +1,28 @@
+# 4.0.0
+
+### mocker.set() method
+
+You could change any option after mocker.start(). Very usefull when you want to change something in the middle of a test.
+
+### mocker.unset(optionKey) and mocker.reset()
+
+For restoring changed options.
+
+### options.response
+
+Now you could change `headers`, `body` and `status` for all mocked requests!
+
+Note:
+
+1. You could change any of these options, e.g. `mocker.set('response', { status: 429, headers: { 'X-Custom': 'qwe' } })`. In that case status and headers will be changed, but not the body.
+2. While response is forming with spread, body and headers are not. So, you could not `add` some headers for initial set headers. For example, `mocker.start({ headers: { foo: 'f' } })` + `mocker.set('response', { headers: { bar: 'b' } })` will give you resulting headers `{ bar: 'b' }` (plus default browser headers, of course).
+3. When you are changing `response`, you are doing this for ANY mocked request. Be carefull.
+4. When you are generating mocks, custom `response` will not work. So, generate your mocks first.
+
+### deprecation
+
+options.requestHeaders is deprecated in flavour of options.reques.headers.
+
 ## 3.3.0
 
 - Add `extra` params for request and response handlers. The only extra param is `workDir`.

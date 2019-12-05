@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-request-mocker",
-  "version": "3.3.0",
+  "version": "4.0.0-alpha",
   "description": "puppeteer request mocker",
   "main": "lib/index.js",
   "installConfig": {

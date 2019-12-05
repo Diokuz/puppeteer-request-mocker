@@ -60,9 +60,11 @@
         const query = e.target.value
 
         fetch(`/api?q=${query}`)
-          .then(re => re.json())
-          .then(j => {
-            suggest.innerText = `suggest: ${j.suggest}`
+          .then(async (re) => {
+            const j = await re.json()
+            const { status } = re
+
+            suggest.innerText = `${status} ${j.suggest}`
           })
       })
 
@@ -70,9 +72,11 @@
         const query = e.target.value
 
         fetch(`/api?q=${query}`, { method: 'POST' })
-          .then(re => re.json())
-          .then(j => {
-            suggestPost.innerText = `suggest: ${j.suggest}`
+          .then(async (re) => {
+            const j = await re.json()
+            const { status } = re
+
+            suggestPost.innerText = `${status} ${j.suggest}`
           })
           .catch(j => {
             suggestPost.innerText = `post request failed`
@@ -83,9 +87,11 @@
         const query = e.target.value
 
         fetch(`http://localhost:4000/api?q=${query}`, { method: 'POST' })
-          .then(re => re.json())
-          .then(j => {
-            suggestCors.innerText = `suggest: ${j.suggest}`
+          .then(async (re) => {
+            const j = await re.json()
+            const { status } = re
+
+            suggestCors.innerText = `${status} ${j.suggest}`
           })
           .catch(j => {
             suggestCors.innerText = `cors request failed`

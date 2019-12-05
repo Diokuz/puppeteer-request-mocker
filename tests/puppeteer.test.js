@@ -19,10 +19,10 @@ describe('connections', () => {
 
   beforeAll(async () => {
     const serverPath = path.resolve(__dirname, 'server')
-    browser = await puppeteer.launch({
-      // headless: false,
-      // slowMo: 80,
-    })
+    browser = await puppeteer.launch(process.env.D ? {
+      headless: false,
+      slowMo: 80,
+    } : {})
 
     page = await browser.newPage()
     // Cant kill if detached: false (for reasons unknown)
@@ -84,7 +84,7 @@ describe('connections', () => {
     // * So, page reaction on the response must be within 100 ms
     // * Checking that reaction: there must be a text `green` in the suggest div
     await page.waitForFunction(() => {
-      return document.querySelector('#suggest').innerText === 'suggest: green'
+      return document.querySelector('#suggest').innerText === '200 green'
     }, { timeout: 100 })
 
     await mocker.stop()
@@ -105,7 +105,7 @@ describe('connections', () => {
 
     // * Awaiting for real response and its corresponding reaction (text `suggest: example` must appear)
     await page.waitForFunction(() => {
-      return document.querySelector('#suggest').innerText === 'suggest: example'
+      return document.querySelector('#suggest').innerText === '200 example'
     }, { timeout: 4000 })
 
     // * All connections must resolves after theirs completion
@@ -130,7 +130,7 @@ describe('connections', () => {
 
     // * Awaiting for real response and its corresponding reaction (text `suggest: example` must appear)
     await page.waitForFunction(() => {
-      return document.querySelector('#suggest').innerText === 'suggest: example'
+      return document.querySelector('#suggest').innerText === '200 example'
     }, { timeout: 4000 })
 
     await expect(mocker.stop()).resolves.toEqual(undefined)
@@ -150,6 +150,69 @@ describe('connections', () => {
     // * Expecting `stop` promise to reject, because no `mock file not found` (MONOFO)
     // await expect(mocker.stop()).rejects.toEqual('MONOFO')
   })
+
+  describe('mocker.set()', () => {
+    it('Generates mocks in extra workDir', async () => {
+      await page.goto('http://localhost:3000')
+
+      // * Starting mocker
+      await mocker.start({
+        page,
+        mockList: 'localhost:3000/api',
+      })
+      await mocker.set('workDir', path.resolve(process.cwd(), '__extra-mocks__'))
+
+      // * Typing `abcd` → invoking request to `/api`
+      await page.click('#input')
+      await page.keyboard.type('abcd', { delay: 100 })
+
+      // * All `/api` requests are slow, so: no mock files at that moment
+      let mockFilePath = path.resolve(__dirname, '../__extra-mocks__/localhost-api/get-3af44a5a')
+      expect(fs.existsSync(mockFilePath)).toBe(false)
+
+      // * mocker.stop waits for all connections
+      await mocker.connections()
+      await sleep(1000)
+
+      // * At that point there must be mock files
+      expect(fs.existsSync(mockFilePath)).toBe(true)
+    })
+
+    it('Changes request.status', async () => {
+      await page.goto('http://localhost:3000')
+
+      // * Starting mocker
+      await mocker.start({
+        page,
+        mockList: 'localhost:3000/api',
+      })
+
+      // * Typing `a` → invoking request to `/api`
+      await page.click('#input')
+      await page.keyboard.type('a')
+
+      // * Awaiting for suggest innerText with code 200
+      await page.waitForFunction(() => {
+        return document.querySelector('#suggest').innerText === '200 example'
+      }, { timeout: 700 })
+
+      await mocker.set('response', { status: 429 })
+      await page.keyboard.type('b')
+
+      // * Awaiting for suggest innerText with code 429
+      await page.waitForFunction(() => {
+        return document.querySelector('#suggest').innerText === '429 world'
+      }, { timeout: 700 })
+    })
+
+    afterAll(() => {
+      rimraf.sync(path.resolve(__dirname, '../__extra-mocks__'))
+    })
+
+    // * stopping the mocker
+    afterEach(async () => await mocker.stop())
+  })
+
 
   describe('mockMiss', () => {
     it('Do not throws in CI with mockMiss === 200', async () => {
@@ -183,7 +246,7 @@ describe('connections', () => {
 
       // * Awaiting for middlware response and its body in suggest div
       await page.waitForFunction(() => {
-        return document.querySelector('#suggest').innerText === 'suggest: mockMiss_middleware'
+        return document.querySelector('#suggest').innerText === '200 mockMiss_middleware'
       }, { timeout: 4000 })
 
       // * Expecting `stop` promise to resolve, because mockMiss is function
@@ -207,7 +270,7 @@ describe('connections', () => {
 
       // * Awaiting for middlware response and its body in suggest div
       await page.waitForFunction(() => {
-        return document.querySelector('#suggest').innerText === 'suggest: green'
+        return document.querySelector('#suggest').innerText === '200 green'
       }, { timeout: 4000 })
 
       // * Expecting `stop` promise to resolve
@@ -230,8 +293,6 @@ describe('connections', () => {
       await page.waitForFunction(() => {
         return document.querySelector('#suggest-cors').innerText === 'cors request failed'
       }, { timeout: 1000 })
-
-      await mocker.stop()
     })
 
     it('blocks same origin non-GET requests by default', async () => {
@@ -248,8 +309,6 @@ describe('connections', () => {
       await page.waitForFunction(() => {
         return document.querySelector('#suggest-post').innerText === 'post request failed'
       }, { timeout: 1000 })
-
-      await mocker.stop()
     })
 
     it('dont blocks cross origin request when url in passList', async () => {
@@ -264,10 +323,8 @@ describe('connections', () => {
 
       // * Awaiting for suggest innerText, which indicates wether request was blocked
       await page.waitForFunction(() => {
-        return document.querySelector('#suggest-cors').innerText === 'suggest: example'
+        return document.querySelector('#suggest-cors').innerText === '200 example'
       }, { timeout: 1000 })
-
-      await mocker.stop()
     })
 
     it('dont blocks cross origin request when url in passList, but with query', async () => {
@@ -282,10 +339,8 @@ describe('connections', () => {
 
       // * Awaiting for suggest innerText, which indicates wether request was blocked
       await page.waitForFunction(() => {
-        return document.querySelector('#suggest-cors').innerText === 'suggest: example'
+        return document.querySelector('#suggest-cors').innerText === '200 example'
       }, { timeout: 1000 })
-
-      await mocker.stop()
     })
 
     it('navigation request should not be blocked', async () => {
@@ -299,9 +354,9 @@ describe('connections', () => {
       // * Goto 'localhost:3000' → 'localhost:4000/text' some url – that url should not be blocked
       await page.goto('http://localhost:4000/text')
       await page.waitFor('#text')
-
-      await mocker.stop()
     })
+
+    afterEach(async () => await mocker.stop())
   })
 })
 

@@ -16,8 +16,8 @@ app.get('/api', (req, res) => {
 
   setTimeout(() => {
     res.set('Access-Control-Allow-Origin', '*')
-    res.json({ suggest: suggests[q] || 'unknown' })
-  }, 3000)
+    res.json({ suggest: suggests[q] || q })
+  }, 300)
 })
 
 app.post('/api', (req, res) => {
@@ -25,8 +25,8 @@ app.post('/api', (req, res) => {
 
   setTimeout(() => {
     res.set('Access-Control-Allow-Origin', '*')
-    res.json({ suggest: suggests[q] || 'unknown' })
-  }, 300)
+    res.json({ suggest: suggests[q] || q })
+  }, 100)
 })
 
 app.get('/', (req, res) => {

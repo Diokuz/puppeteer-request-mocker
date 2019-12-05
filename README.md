@@ -101,8 +101,30 @@ const options = {
   // Warning: some tests could became flaky
   awaitConnectionsOnStop: false,
 
-
+  // Custom headers or/and body or/and status for ANY request from the mockList
+  // All keys in the object are optional (e.g. you could change only status code)
+  // Usefull with combination of mocker.set() method
+  // Warning! It is not working in the mocks generation mode! So, first, create your mocks.
+  // See also https://github.com/puppeteer/puppeteer/issues/599
+  response: {
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    body: 'OK',
+    status: 200,
+  },
 }
 ```
-
 Both `mocker.start()` and `mocker.stop()` return a `Promise`.
+
+## mocker.set()
+
+You could temporary change any option and then get back to its initial value.
+
+For example:
+
+```js
+mocker.set('response', { status: 427 })
+const result = await doRequest()
+expect(result).toBe('Server responded with an error, status code is 427')
+// note: headers and body will be taken from the mocks, only status code is changed
+mocker.unset('response) // or mocker.reset()
+```
