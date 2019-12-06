@@ -1,4 +1,4 @@
-const getRequestId = require('../lib/storage').__getRequestId
+const getRequestId = require('../lib/getRequestId')
 
 it('Generates same names for same request', () => {
   const name1 = getRequestId({ url: 'http://example.com' })
