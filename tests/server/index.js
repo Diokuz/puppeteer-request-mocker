@@ -1,8 +1,10 @@
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const app = express()
+app.use(bodyParser)
 
 const suggests = {
   a: 'example',
@@ -21,7 +23,7 @@ app.get('/api', (req, res) => {
 })
 
 app.post('/api', (req, res) => {
-  const q = req.query.q
+  const q = req.body.q
 
   setTimeout(() => {
     res.set('Access-Control-Allow-Origin', '*')

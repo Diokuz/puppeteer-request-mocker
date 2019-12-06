@@ -71,7 +71,14 @@
       document.querySelector('#input-post').addEventListener('keyup', (e) => {
         const query = e.target.value
 
-        fetch(`/api?q=${query}`, { method: 'POST' })
+        fetch(`/api`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ q: query }),
+        })
           .then(async (re) => {
             const j = await re.json()
             const { status } = re

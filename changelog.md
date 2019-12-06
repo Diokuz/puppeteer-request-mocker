@@ -1,3 +1,41 @@
+# 5.0.0
+
+### Json format for mocks and response.body
+
+All mocks are stored in json files, by defaut. Old mock files also supported for backward compatibility, but any new mock files will be written as json.
+
+Also, if response.body is json, it stores as json, not as a string.
+
+Data, stored in json files:
+
+request:
+
+1. url
+2. headers (new!)
+3. body (if any)
+
+response:
+
+1. status (new!)
+2. headers (new!)
+3. body (in json, if json, or as string otherwise)
+
+So, now you could change not only the body of a request, but also its headers and its status. Plus you could check the request headers.
+
+Note 1: 'request' field could be used only for debugging purposes. It is not used by mocker when running tests.
+
+Note 2: `response.headers` from mock has higher priority than `options.response.headers`.
+
+### Add `options.skipResponseHeaders`
+
+Response headers, listed in `skipResponseHeaders`, are not saved in mock files. Defaule value is: `['date', 'x-powered-by', 'etag', 'content-length']`.
+
+### Remove default value for `options.request`
+
+Since response headers now in mock files explicitly, there is no need to enrich these headers with custom values (but you still could do this, of course).
+
+Note: that is only for json format mocks. For old (text) format files it was not removed.
+
 # 4.0.0
 
 ### breaking: deprecated mocker.run() is removed
