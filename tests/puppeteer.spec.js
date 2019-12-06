@@ -4,7 +4,7 @@ const { spawn } = require('child_process')
 const puppeteer = require('puppeteer')
 const waitPort = require('wait-port')
 const rimraf = require('rimraf')
-const mocker = require('..')
+const mocker = require('../lib')
 
 async function sleep(time) {
   return new Promise((resolve, reject) => {
@@ -52,10 +52,10 @@ describe('connections', () => {
     await page.keyboard.type('abcd', { delay: 100 })
 
     // * All `/api` requests are slow, so: no mock files at that moment
-    let mockFilePath = path.resolve(__dirname, '../__remocks__/localhost-api/get-3af44a5a')
+    let mockFilePath = path.resolve(__dirname, '../__remocks__/localhost-api/get-3af44a5a.json')
     expect(fs.existsSync(mockFilePath)).toBe(false)
 
-    // * mocker.stop waits for all connections
+    // * wait for all connections to complete
     await mocker.connections()
 
     // * At that point there must be mock files
@@ -63,8 +63,35 @@ describe('connections', () => {
 
     // * stopping the mocker
     await mocker.stop()
+  })
 
-    // await page.screenshot({ path: 'screenshots/github.png' })
+  it('Generates mocks for POST request', async () => {
+    rimraf.sync(path.resolve(__dirname, '../__remocks-post__'))
+    await page.goto('http://localhost:3000')
+
+    // * Starting mocker
+    await mocker.start({
+      page,
+      mockList: 'localhost:3000/api',
+      namespace: '__remocks-post__',
+    })
+
+    // * Typing `abcd` → invoking POST request to `/api`
+    await page.click('#input-post')
+    await page.keyboard.type('abcd', { delay: 10 })
+
+    // * All `/api` requests are slow, so: no mock files at that moment
+    let mockFilePath = path.resolve(__dirname, '../__remocks-post__/localhost-api/post-1ee7ee17.json')
+    expect(fs.existsSync(mockFilePath)).toBe(false)
+
+    // * wait for all connections to complete
+    await mocker.connections()
+
+    // * At that point there must be mock files
+    expect(fs.existsSync(mockFilePath)).toBe(true)
+
+    // * stopping the mocker
+    await mocker.stop()
   })
 
   it('Uses existing mocks', async () => {
@@ -167,7 +194,7 @@ describe('connections', () => {
       await page.keyboard.type('abcd', { delay: 100 })
 
       // * All `/api` requests are slow, so: no mock files at that moment
-      let mockFilePath = path.resolve(__dirname, '../__extra-mocks__/localhost-api/get-3af44a5a')
+      let mockFilePath = path.resolve(__dirname, '../__extra-mocks__/localhost-api/get-3af44a5a.json')
       expect(fs.existsSync(mockFilePath)).toBe(false)
 
       // * mocker.stop waits for all connections
