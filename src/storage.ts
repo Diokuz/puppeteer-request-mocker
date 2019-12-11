@@ -1,10 +1,10 @@
-const fs = require('fs')
-const path = require('path')
-const { URL } = require('url')
-const makeDir = require('make-dir')
-const debug = require('debug')
-const signale = require('signale')
-const getRequestId = require('./getRequestId')
+import fs from 'fs'
+import path from 'path'
+import { URL } from 'url'
+import makeDir from 'make-dir'
+import debug from 'debug'
+import signale from 'signale'
+import getRequestId from './getRequestId'
 
 const loggerRead = debug('prm:storage:read')
 const loggerWrite = debug('prm:storage:write')
@@ -38,7 +38,7 @@ const getNames = (params) => {
   }
 }
 
-exports.write = ({ fn, body, url, ci }) => {
+export const write = ({ fn, body, url, ci }) => {
   loggerWrite(`Entering storage.write with fn === ${fn}`)
 
   const jsonFn = fn + '.json'
@@ -87,7 +87,7 @@ exports.write = ({ fn, body, url, ci }) => {
   })
 }
 
-exports.read = (fn) => {
+export const read = (fn) => {
   loggerRead(`About to read file ${fn}(.json)`)
   const jsonFn = fn + '.json'
   let fileToRead = jsonFn
@@ -122,5 +122,6 @@ exports.read = (fn) => {
   })
 }
 
-exports.__getNames = getNames
-exports.name = (...args) => getNames(...args).absFileName
+export const __getNames = getNames
+// @ts-ignore
+export const name = (...args) => getNames(...args).absFileName

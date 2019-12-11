@@ -3,9 +3,6 @@
   "version": "5.0.0",
   "description": "puppeteer request mocker",
   "main": "lib/index.js",
-  "installConfig": {
-    "pnp": true
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Diokuz/puppeteer-request-mocker.git"
@@ -32,11 +29,13 @@
     "signale": "^1.4.0"
   },
   "devDependencies": {
+    "@types/node": "^12.12.17",
     "express": "^4.17.1",
     "jest": "^24.9.0",
     "prettier": "1.19.1",
     "puppeteer": "^2.0.0",
     "rimraf": "^3.0.0",
+    "typescript": "^3.7.3",
     "wait-port": "^0.2.6"
   }
 }

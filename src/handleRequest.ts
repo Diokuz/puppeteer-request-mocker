@@ -1,13 +1,12 @@
-const path = require('path')
-const url = require('url')
-const debug = require('debug')
-const signale = require('signale')
-const { shouldOk, shouldNotIntercept, isPassableByDefault } = require('./utils')
-const storage = require('./storage')
+import path from 'path'
+import debug from 'debug'
+import signale from 'signale'
+import { shouldOk, shouldNotIntercept, isPassableByDefault } from './utils'
+import * as storage from './storage'
 
 const logger = debug('prm:-request')
 
-module.exports = function createHandler(initialParams) {
+export default function createHandler(initialParams) {
   logger('Creating request handler')
 
   return function handleRequest(interceptedRequest, extraParams = {}) {
@@ -115,16 +114,16 @@ module.exports = function createHandler(initialParams) {
     reqSet.add(fn)
     debug('prm:connections:add')(
       path.basename(fn),
-      Array.from(reqSet).map((f) => path.basename(f))
+      Array.from(reqSet).map((f: string) => path.basename(f))
     )
 
     logger(`» Trying to read from file ${fn}`)
 
     storage
       .read(fn)
-      .then((rawData) => {
+      .then((rawData: any) => {
         let body = rawData
-        let headers = null
+        let headers = {}
 
         try {
           const res = JSON.parse(rawData).response

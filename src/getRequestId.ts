@@ -1,6 +1,6 @@
-const crypto = require('crypto')
-const { URL } = require('url')
-const queryString = require('query-string')
+import crypto from 'crypto'
+import { URL } from 'url'
+import queryString from 'query-string'
 
 /**
  * Request Id generator.
@@ -75,6 +75,7 @@ const getRequestId = (params) => {
    * which are not declared in the queryParams array
    */
   if (queryParams.length > 0) {
+    // @ts-ignore
     let keys = [...urlObj.searchParams.keys()]
     for (let key of keys) {
       if (!queryParams.includes(key)) {
@@ -101,4 +102,4 @@ const getRequestId = (params) => {
   return `${method.toLowerCase()}-${hash}`
 }
 
-module.exports = getRequestId
+export default getRequestId

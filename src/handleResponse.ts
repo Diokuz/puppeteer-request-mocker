@@ -1,12 +1,12 @@
-const path = require('path')
-const debug = require('debug')
-const signale = require('signale')
-const { shouldOk, shouldNotIntercept } = require('./utils')
-const storage = require('./storage')
+import path from 'path'
+import debug from 'debug'
+import signale from 'signale'
+import { shouldOk, shouldNotIntercept } from './utils'
+import * as storage from './storage'
 
 const logger = debug('prm:response')
 
-module.exports = function createHandler(initialParams) {
+export default function createHandler(initialParams) {
   logger('Creating response handler')
 
   return function handlerResponse(interceptedResponse, extraParams = {}) {
@@ -17,7 +17,6 @@ module.exports = function createHandler(initialParams) {
       mockList,
       okList,
       verbose,
-      force,
       ci,
       queryParams,
       skipQueryParams,
@@ -85,7 +84,7 @@ module.exports = function createHandler(initialParams) {
           reqSet.delete(fn)
           debug('prm:connections:delete')(
             path.basename(fn),
-            Array.from(reqSet).map((f) => path.basename(f))
+            Array.from(reqSet).map((f: string) => path.basename(f))
           )
 
           return
@@ -127,13 +126,13 @@ module.exports = function createHandler(initialParams) {
             ),
             ci,
           })
-          .then((e) => {
+          .then((e: any) => {
             logger(`« Successfully exited from storage.write for file ${e.fn}`)
 
             reqSet.delete(e.fn)
             debug('prm:connections:delete')(
               path.basename(fn),
-              Array.from(reqSet).map((f) => path.basename(f))
+              Array.from(reqSet).map((f: string) => path.basename(f))
             )
           })
           .catch((err) => {

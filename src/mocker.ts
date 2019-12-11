@@ -3,18 +3,19 @@
  * @todo instantiate for each test suite explicitly
  */
 
-const path = require('path')
-const makeDir = require('make-dir')
-const debug = require('debug')
-const signale = require('signale')
-const createRequestHandler = require('./handleRequest')
-const createResponseHandler = require('./handleResponse')
+import path from 'path'
+import makeDir from 'make-dir'
+import debug from 'debug'
+import signale from 'signale'
+import createRequestHandler from './handleRequest'
+import createResponseHandler from './handleResponse'
 
 const logger = debug('prm')
 
 const defaultParams = {
   rootDir: process.cwd(),
   namespace: '__remocks__',
+  // @ts-ignore
   page: typeof page === 'undefined' ? null : page,
   queryParams: [],
   skipQueryParams: [],
@@ -46,6 +47,21 @@ class Mocker {
   constructor(customDefaultParams) {
     this.defaultParams = Object.assign({}, defaultParams, customDefaultParams)
   }
+
+  page: any
+  defaultParams: Object
+  extraParams: Object
+  params: any
+  reqSet: Set<any>
+  cachedReqs: Map<string, any>
+  alive: boolean
+  reqsPromise: Promise<any>
+  requestHandler: Function
+  responseHandler: Function
+  onCloseHandler: Function | null
+  _startPromise: Promise<any> | void
+  _resolveReqs: Function
+  _rejectReqs: Function
 
   _getParams(userConfig) {
     const params = Object.assign({}, this.defaultParams, userConfig)
@@ -184,7 +200,7 @@ class Mocker {
   }
 
   reset() {
-    this.extraParams = null
+    this.extraParams = {}
   }
 
   /*
@@ -292,4 +308,4 @@ class Mocker {
   }
 }
 
-module.exports = Mocker
+export default Mocker

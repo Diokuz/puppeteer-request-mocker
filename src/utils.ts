@@ -1,4 +1,4 @@
-const { URL } = require('url')
+import { URL } from 'url'
 
 const matches = (arr, str) => !!arr.find((el) => str.includes(el))
 
@@ -31,7 +31,7 @@ function isPassableByDefault(pageUrl, reqUrl, method) {
   return method === 'GET' && isSameOrigin(pageUrl, reqUrl)
 }
 
-module.exports = {
+export {
   matches,
   shouldNotIntercept,
   shouldOk,
