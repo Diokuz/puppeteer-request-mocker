@@ -1,4 +1,4 @@
-const getNames = require('../lib/storage').__getNames
+const getNames = require('../dist/storage').__getNames
 
 // url, method, postData = '', workDir, skipQueryParams = [], skipPostParams = []
 
@@ -89,15 +89,15 @@ it('Generates same filenames for different order of query params', () => {
 
 it('Generates different filenames for different post bodies without content-type', () => {
   const names1 = getNames({
-    url:'http://example.com', 
-    method: 'POST', 
-    postData: 'post_body_1', 
+    url:'http://example.com',
+    method: 'POST',
+    postData: 'post_body_1',
     workDir: '/diokuz/dir'
   })
   const names2 = getNames({
-    url: 'http://example.com', 
-    method: 'POST', 
-    postData: 'post_body_2', 
+    url: 'http://example.com',
+    method: 'POST',
+    postData: 'post_body_2',
     workDir: '/diokuz/dir'
   })
 
@@ -109,17 +109,17 @@ it('Generates different filenames for different FromData post bodies', () => {
   const headers = {"content-type": "application/x-www-form-urlencoded"}
 
   const names1 = getNames({
-    url: 'http://example.com', 
-    method: 'POST', 
+    url: 'http://example.com',
+    method: 'POST',
     headers,
-    postData: "foo=bar&x=2", 
+    postData: "foo=bar&x=2",
     workDir: '/diokuz/dir'
   })
   const names2 = getNames({
-    url: 'http://example.com', 
-    method: 'POST', 
+    url: 'http://example.com',
+    method: 'POST',
     headers,
-    postData: "foo=bazzzz&x=2", 
+    postData: "foo=bazzzz&x=2",
     workDir: '/diokuz/dir'
   })
 
@@ -131,17 +131,17 @@ it('Generates different filenames for different JSON post bodies', () => {
   const headers = {"content-type": "application/json"}
 
   const names1 = getNames({
-    url: 'http://example.com', 
-    method: 'POST', 
+    url: 'http://example.com',
+    method: 'POST',
     headers,
-    postData: JSON.stringify({ id: 1, randomId: 2, timestamp: 123 }), 
+    postData: JSON.stringify({ id: 1, randomId: 2, timestamp: 123 }),
     workDir: '/diokuz/dir'
   })
   const names2 = getNames({
-    url: 'http://example.com', 
-    method: 'POST', 
+    url: 'http://example.com',
+    method: 'POST',
     headers,
-    postData: JSON.stringify({ id: 1, randomId: 3, timestamp: 321 }), 
+    postData: JSON.stringify({ id: 1, randomId: 3, timestamp: 321 }),
     workDir: '/diokuz/dir'
   })
 
@@ -154,19 +154,19 @@ it('Generates same filenames for different skipped FormData post bodies', () => 
 
   const headers = {"content-type": "application/x-www-form-urlencoded"}
   const names1 = getNames({
-    url: 'http://example.com', 
-    method: 'POST', 
-    headers, 
-    postData: "foo=bar&x=2", 
-    workDir: '/diokuz/dir', 
+    url: 'http://example.com',
+    method: 'POST',
+    headers,
+    postData: "foo=bar&x=2",
+    workDir: '/diokuz/dir',
     skipPostParams
   })
   const names2 = getNames({
-    url: 'http://example.com', 
-    method: 'POST', 
-    headers, 
-    postData: "foo=bazzzz&x=2", 
-    workDir: '/diokuz/dir', 
+    url: 'http://example.com',
+    method: 'POST',
+    headers,
+    postData: "foo=bazzzz&x=2",
+    workDir: '/diokuz/dir',
     skipPostParams
   })
 
@@ -179,19 +179,19 @@ it('Generates same filenames for different skipped JSON post bodies', () => {
 
   const headers = {"content-type": "application/json"}
   const names1 = getNames({
-    url: 'http://example.com', 
-    method: 'POST', 
-    headers, 
-    postData: JSON.stringify({ id: 1, randomId: 2, timestamp: 123 }), 
-    workDir: '/diokuz/dir', 
+    url: 'http://example.com',
+    method: 'POST',
+    headers,
+    postData: JSON.stringify({ id: 1, randomId: 2, timestamp: 123 }),
+    workDir: '/diokuz/dir',
     skipPostParams
   })
   const names2 = getNames({
-    url: 'http://example.com', 
-    method: 'POST', 
-    headers, 
-    postData: JSON.stringify({ id: 1, randomId: 3, timestamp: 321 }), 
-    workDir: '/diokuz/dir', 
+    url: 'http://example.com',
+    method: 'POST',
+    headers,
+    postData: JSON.stringify({ id: 1, randomId: 3, timestamp: 321 }),
+    workDir: '/diokuz/dir',
     skipPostParams
   })
 

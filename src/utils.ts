@@ -31,9 +31,4 @@ function isPassableByDefault(pageUrl, reqUrl, method) {
   return method === 'GET' && isSameOrigin(pageUrl, reqUrl)
 }
 
-export {
-  matches,
-  shouldNotIntercept,
-  shouldOk,
-  isPassableByDefault,
-}
+export { matches, shouldNotIntercept, shouldOk, isPassableByDefault }

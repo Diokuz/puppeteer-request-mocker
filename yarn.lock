@@ -813,7 +813,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.19.0":
+"body-parser@npm:1.19.0, body-parser@npm:^1.19.0":
   version: 1.19.0
   resolution: "body-parser@npm:1.19.0"
   dependencies:
@@ -4201,6 +4201,7 @@ __metadata:
   dependencies:
     "@types/node": ^12.12.17
     "@yarnpkg/pnpify": ^2.0.0-rc.12
+    body-parser: ^1.19.0
     crypto: ^1.0.1
     debug: ^4.1.1
     express: ^4.17.1
@@ -4212,6 +4213,7 @@ __metadata:
     query-string: ^6.8.3
     rimraf: ^3.0.0
     signale: ^1.4.0
+    tslib: ^1.10.0
     typescript: ^3.7.3
     wait-port: ^0.2.6
   languageName: unknown
@@ -5213,6 +5215,13 @@ __metadata:
   dependencies:
     punycode: ^2.1.0
   checksum: 2790d3e6251ccc357242d2034214eb02c103794a6f3f570d6baae9debf1858de1604aeb55049c4bb178cc1a2aba501d2ae0970ea8503cd25612dd346bcfc9dd5
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^1.10.0":
+  version: 1.10.0
+  resolution: "tslib@npm:1.10.0"
+  checksum: 626387669b38797372530d84df93dafcc0eca2b3bad31b109c7308b2e8d9c4ed0ba94113eb08a6946aa1fbee3b619fb69dd81f8681654bbc806cf8f208caeb47
   languageName: node
   linkType: hard
 

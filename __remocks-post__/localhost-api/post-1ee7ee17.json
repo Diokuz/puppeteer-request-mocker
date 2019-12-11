@@ -20,6 +20,8 @@
       "connection": "keep-alive",
       "content-type": "application/json; charset=utf-8"
     },
-    "body": {}
+    "body": {
+      "suggest": "example"
+    }
   }
 }

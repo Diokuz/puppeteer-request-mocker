@@ -44,7 +44,7 @@ const defaultParams = {
 }
 
 class Mocker {
-  constructor(customDefaultParams) {
+  constructor(customDefaultParams = {}) {
     this.defaultParams = Object.assign({}, defaultParams, customDefaultParams)
   }
 

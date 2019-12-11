@@ -2,9 +2,11 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
+const signale = require('signale')
 
 const app = express()
-app.use(bodyParser)
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 const suggests = {
   a: 'example',
@@ -14,6 +16,8 @@ const suggests = {
 }
 
 app.get('/api', (req, res) => {
+  signale.info(`get /api`, req.query)
+
   const q = req.query.q
 
   setTimeout(() => {
@@ -23,6 +27,8 @@ app.get('/api', (req, res) => {
 })
 
 app.post('/api', (req, res) => {
+  signale.info(`post /api`, req.body)
+
   const q = req.body.q
 
   setTimeout(() => {
@@ -31,16 +37,35 @@ app.post('/api', (req, res) => {
   }, 100)
 })
 
-app.get('/', (req, res) => {
-  const htmlPath = path.resolve(__dirname, './index.html')
-  const htmlContent = fs.readFileSync(htmlPath, 'utf8')
+app.post('/cors-api', (req, res) => {
+  signale.info(`post /cors-api`, req.query)
 
-  res.send(htmlContent)
+  const q = req.query.q
+
+  setTimeout(() => {
+    res.set('Access-Control-Allow-Origin', '*')
+    res.json({ suggest: suggests[q] || q })
+  }, 100)
+})
+
+app.get('/', (req, res) => {
+  signale.info(`entering /`)
+  try {
+    const htmlPath = path.resolve(__dirname, './index.html')
+    const htmlContent = fs.readFileSync(htmlPath, 'utf8')
+
+    res.send(htmlContent)
+  } catch (e) {
+    signale.fatal(e.message)
+    res.send('not ok')
+  }
 })
 
 app.get('/text', (req, res) => {
+  signale.info(`get /text`)
+
   res.send('<div id="text">text</div>')
 })
 
-app.listen(3000, () => console.log('http://localhost:3000'))
-app.listen(4000, () => console.log('http://localhost:4000'))
+app.listen(3000, () => signale.info('http://localhost:3000'))
+app.listen(4000, () => signale.info('http://localhost:4000'))

@@ -1,4 +1,4 @@
-const getRequestId = require('../lib/getRequestId')
+const getRequestId = require('../dist/getRequestId').default
 
 it('Generates same names for same request', () => {
   const name1 = getRequestId({ url: 'http://example.com' })

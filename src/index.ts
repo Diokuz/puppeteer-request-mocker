@@ -1,4 +1,4 @@
-const Mocker = require('./mocker')
+import Mocker from './mocker'
 
 const mocker = new Mocker()
 

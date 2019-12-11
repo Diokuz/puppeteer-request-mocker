@@ -4,7 +4,8 @@ const { spawn } = require('child_process')
 const puppeteer = require('puppeteer')
 const waitPort = require('wait-port')
 const rimraf = require('rimraf')
-const mocker = require('../lib')
+const signale = require('signale')
+const mocker = require('../dist').default
 
 async function sleep(time) {
   return new Promise((resolve, reject) => {
@@ -28,6 +29,10 @@ describe('connections', () => {
     // Cant kill if detached: false (for reasons unknown)
     // Probably https://azimi.me/2014/12/31/kill-child_process-node-js.html
     server = spawn('node', [serverPath], { detached: true })
+    server.stdout.on('data', function(data) {
+      signale.info(data.toString())
+      // process.stdout.write(data.toString())
+    });
     await waitPort({ host: 'localhost', port: 3000 })
   })
 
