@@ -3,6 +3,9 @@
   "version": "5.0.0",
   "description": "puppeteer request mocker",
   "main": "lib/index.js",
+  "installConfig": {
+    "pnp": true
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Diokuz/puppeteer-request-mocker.git"
@@ -30,6 +33,7 @@
   },
   "devDependencies": {
     "@types/node": "^12.12.17",
+    "@yarnpkg/pnpify": "^2.0.0-rc.12",
     "express": "^4.17.1",
     "jest": "^24.9.0",
     "prettier": "1.19.1",
