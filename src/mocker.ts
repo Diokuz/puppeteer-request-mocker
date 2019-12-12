@@ -6,7 +6,7 @@
 import path from 'path'
 import makeDir from 'make-dir'
 import debug from 'debug'
-import signale from 'signale'
+import signale from './logger'
 import createRequestHandler from './handleRequest'
 import createResponseHandler from './handleResponse'
 

@@ -3,8 +3,9 @@ import path from 'path'
 import { URL } from 'url'
 import makeDir from 'make-dir'
 import debug from 'debug'
-import signale from 'signale'
+import signale from './logger'
 import getRequestId from './getRequestId'
+import logger from './logger'
 
 const loggerRead = debug('prm:storage:read')
 const loggerWrite = debug('prm:storage:write')
@@ -64,8 +65,8 @@ export const write = ({ fn, body, url, ci }) => {
           return
         }
 
-        signale.info(`Writing mock for url "${url}"`)
-        signale.info(`to file "${jsonFn}"`)
+        signale.write(`Writing mock for url "${url}"`)
+        signale.write(`to file "${jsonFn}"`)
 
         fs.writeFile(jsonFn, body, (err) => {
           if (err) {
@@ -104,18 +105,18 @@ export const read = (fn) => {
           if (err.code === 'ENOENT') {
             loggerRead(`File does not exist ${fileToRead}`)
           } else {
-            loggerRead(`Fail to read the file ${fileToRead}`, err)
+            logger.error(`Fail to read the file ${fileToRead}`, err)
           }
 
           reject({ fn, err })
         } else {
-          loggerRead(`Successfully read the file ${fileToRead}`)
+          logger.read(`Successfully read the file ${fileToRead}`)
 
           resolve(data)
         }
       })
     } catch (err) {
-      loggerRead(`Unexpected failure of file reading ${fileToRead}`, err)
+      logger.error(`Unexpected failure of file reading ${fileToRead}`, err)
 
       reject({ fn, err })
     }

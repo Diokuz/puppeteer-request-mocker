@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
-const signale = require('signale')
+const logger = require('./logger')
 
 const app = express()
 app.use(bodyParser.json())
@@ -16,7 +16,7 @@ const suggests = {
 }
 
 app.get('/api', (req, res) => {
-  signale.info(`get /api`, req.query)
+  logger.info(`get /api`, req.query)
 
   const q = req.query.q
 
@@ -27,7 +27,7 @@ app.get('/api', (req, res) => {
 })
 
 app.post('/api', (req, res) => {
-  signale.info(`post /api`, req.body)
+  logger.req(`post /api`, req.body)
 
   const q = req.body.q
 
@@ -38,7 +38,7 @@ app.post('/api', (req, res) => {
 })
 
 app.post('/cors-api', (req, res) => {
-  signale.info(`post /cors-api`, req.query)
+  logger.req(`post /cors-api`, req.query)
 
   const q = req.query.q
 
@@ -49,23 +49,23 @@ app.post('/cors-api', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-  signale.info(`entering /`)
+  logger.req(`entering /`)
   try {
     const htmlPath = path.resolve(__dirname, './index.html')
     const htmlContent = fs.readFileSync(htmlPath, 'utf8')
 
     res.send(htmlContent)
   } catch (e) {
-    signale.fatal(e.message)
+    logger.fatal(e.message)
     res.send('not ok')
   }
 })
 
 app.get('/text', (req, res) => {
-  signale.info(`get /text`)
+  logger.info(`get /text`)
 
   res.send('<div id="text">text</div>')
 })
 
-app.listen(3000, () => signale.info('http://localhost:3000'))
-app.listen(4000, () => signale.info('http://localhost:4000'))
+app.listen(3000, () => logger.info('http://localhost:3000'))
+app.listen(4000, () => logger.info('http://localhost:4000'))
