@@ -9,7 +9,7 @@ it('Generates filename for domain without slash', () => {
   })
 
   expect(names.targetDir).toBe('/diokuz/dir/example.com')
-  expect(names.absFileName).toBe('/diokuz/dir/example.com/get-d3c8eae0')
+  expect(names.absFileName).toBe('/diokuz/dir/example.com/get-october-leopard-owe')
 })
 
 it('Generates filename for domain with slash', () => {
@@ -19,7 +19,7 @@ it('Generates filename for domain with slash', () => {
   })
 
   expect(names.targetDir).toBe('/diokuz/dir/example.com')
-  expect(names.absFileName).toBe('/diokuz/dir/example.com/get-d3c8eae0')
+  expect(names.absFileName).toBe('/diokuz/dir/example.com/get-october-leopard-owe')
 })
 
 it('Generates filename for domain with slugs', () => {
@@ -29,7 +29,7 @@ it('Generates filename for domain with slugs', () => {
   })
 
   expect(names.targetDir).toBe('/diokuz/dir/example.com-foo-bar')
-  expect(names.absFileName).toBe('/diokuz/dir/example.com-foo-bar/get-edab160c')
+  expect(names.absFileName).toBe('/diokuz/dir/example.com-foo-bar/get-october-lithium-oven')
 })
 
 it('Generates filename for domain with slugs and trailing slash', () => {
@@ -39,7 +39,7 @@ it('Generates filename for domain with slugs and trailing slash', () => {
   })
 
   expect(names.targetDir).toBe('/diokuz/dir/example.com-foo-bar')
-  expect(names.absFileName).toBe('/diokuz/dir/example.com-foo-bar/get-ffef258e')
+  expect(names.absFileName).toBe('/diokuz/dir/example.com-foo-bar/get-papa-oil-london')
 })
 
 it('Generates different filenames for different query params', () => {
@@ -52,7 +52,7 @@ it('Generates different filenames for different query params', () => {
     workDir: '/diokuz/dir',
   })
 
-  expect(names1.absFileName).toBe('/diokuz/dir/example.com-foo-bar/get-638e525e')
+  expect(names1.absFileName).toBe('/diokuz/dir/example.com-foo-bar/get-mars-node-nine')
   expect(names1.absFileName).not.toBe(names2.absFileName)
 })
 
@@ -68,7 +68,7 @@ it('Generates same filenames for different skipped query params', () => {
     skipQueryParams: ['random']
   })
 
-  expect(names1.absFileName).toBe('/diokuz/dir/example.com-foo-bar/get-af45db4d')
+  expect(names1.absFileName).toBe('/diokuz/dir/example.com-foo-bar/get-fruit-ark-beam')
   expect(names1.absFileName).toBe(names2.absFileName)
 })
 
@@ -83,7 +83,7 @@ it('Generates same filenames for different order of query params', () => {
     workDir: '/diokuz/dir'
   })
 
-  expect(names1.absFileName).toBe('/diokuz/dir/example.com-foo-bar/get-af45db4d')
+  expect(names1.absFileName).toBe('/diokuz/dir/example.com-foo-bar/get-fruit-ark-beam')
   expect(names1.absFileName).toBe(names2.absFileName)
 })
 
@@ -101,7 +101,7 @@ it('Generates different filenames for different post bodies without content-type
     workDir: '/diokuz/dir'
   })
 
-  expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-28450036')
+  expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-romeo-flux-chicken')
   expect(names1.absFileName).not.toBe(names2.absFileName)
 })
 
@@ -123,7 +123,7 @@ it('Generates different filenames for different FromData post bodies', () => {
     workDir: '/diokuz/dir'
   })
 
-  expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-2e223b54')
+  expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-jet-mars-table')
   expect(names1.absFileName).not.toBe(names2.absFileName)
 })
 
@@ -145,7 +145,7 @@ it('Generates different filenames for different JSON post bodies', () => {
     workDir: '/diokuz/dir'
   })
 
-  expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-2edaa4dd')
+  expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-failed-monkey-hotel')
   expect(names1.absFileName).not.toBe(names2.absFileName)
 })
 
@@ -170,7 +170,7 @@ it('Generates same filenames for different skipped FormData post bodies', () => 
     skipPostParams
   })
 
-  expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-faa5fbbe')
+  expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-lamp-echo-jupiter')
   expect(names1.absFileName).toBe(names2.absFileName)
 })
 
@@ -195,6 +195,6 @@ it('Generates same filenames for different skipped JSON post bodies', () => {
     skipPostParams
   })
 
-  expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-5b9e6a38')
+  expect(names1.absFileName).toBe('/diokuz/dir/example.com/post-equal-uniform-ice')
   expect(names1.absFileName).toBe(names2.absFileName)
 })

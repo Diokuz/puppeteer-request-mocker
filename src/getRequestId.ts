@@ -1,13 +1,17 @@
-import crypto from 'crypto'
+// @ts-ignore
+import { createHash } from 'crypto'
+// @ts-ignore
 import { URL } from 'url'
+// @ts-ignore
 import queryString from 'query-string'
+import { humanize } from './words-hash'
 
 /**
  * Request Id generator.
  * Accounts for request data:
  * 1. url (protocol + host + path)
  * 2. query params (filtered with queryParams and skipQueryParams)
- * 3. method (get, post...)
+ * 3. method (get, post...) (as prefix)
  * 4. postData, if any (filtered deeply with skipPostParams)
  *
  * Rid does not accounts for
@@ -87,19 +91,13 @@ const getRequestId = (params) => {
   // Some parameters could vary over the time, so we can exclude them from naming
   // (be carefull, use it only if it does not affect actual response body)
   skipQueryParams.forEach((param) => urlObj.searchParams.delete(param))
-  let baseStr = method + urlObj.toString() + postData
+  let baseStr = urlObj.toString() + postData
 
   if (params.verbose) {
     console.log('requestId: baseStr, baseStr.length', baseStr, baseStr.length)
   }
 
-  const hash = crypto
-    .createHash('md5')
-    .update(baseStr)
-    .digest('hex')
-    .substr(0, 8)
-
-  return `${method.toLowerCase()}-${hash}`
+  return `${method.toLowerCase()}-${humanize(baseStr, 3)}`
 }
 
 export default getRequestId

@@ -24,7 +24,6 @@
   },
   "homepage": "https://github.com/Diokuz/puppeteer-request-mocker#readme",
   "dependencies": {
-    "crypto": "^1.0.1",
     "debug": "^4.1.1",
     "is-ci": "^2.0.0",
     "make-dir": "^3.0.0",
@@ -41,6 +40,7 @@
     "prettier": "1.19.1",
     "puppeteer": "^2.0.0",
     "rimraf": "^3.0.0",
+    "ts-jest": "^24.2.0",
     "typescript": "^3.7.3",
     "wait-port": "^0.2.6"
   }

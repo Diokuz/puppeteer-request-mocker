@@ -875,12 +875,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bs-logger@npm:0.x":
+  version: 0.2.6
+  resolution: "bs-logger@npm:0.2.6"
+  dependencies:
+    fast-json-stable-stringify: 2.x
+  checksum: 2d64666c84e0792881dbba5b58823630a6a52ea40aad1d36870451197f67e0125656ad114a0f37b48fae786bc16cb5dbfe71343b3d440a08ac9d4b75825fdeb6
+  languageName: node
+  linkType: hard
+
 "bser@npm:^2.0.0":
   version: 2.0.0
   resolution: "bser@npm:2.0.0"
   dependencies:
     node-int64: ^0.4.0
   checksum: 37f35410b2787a041774ab8a0aac5d34c62ca90dabdcd76dc77fc9e885c0028d8d21321e9612208e58b1003f0df241422eb082b033125b4e4799082293014059
+  languageName: node
+  linkType: hard
+
+"buffer-from@npm:1.x":
+  version: 1.1.1
+  resolution: "buffer-from@npm:1.1.1"
+  checksum: b34c802232998fe342f64398c6bfbcd74c7e3d8115513ccc1c932c8ea0e0a205293847bc69be4c32ed9388ca151f635b005019e0bddbd80a5df34da537d722d6
   languageName: node
   linkType: hard
 
@@ -926,6 +942,13 @@ __metadata:
   version: 3.1.0
   resolution: "callsites@npm:3.1.0"
   checksum: 539341e948410059e2f8ff927127e718ab58c36026cb84a1b0967defff6d2be0b072a985b75853112016a4f09d94f222d0d9f70e6b622bd2e34e5d9de3f26315
+  languageName: node
+  linkType: hard
+
+"camelcase@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "camelcase@npm:4.1.0"
+  checksum: e43e9bf50c4537311e658a0192f5295e6fc0eb8404e42485a1385dbfb735a0e76c899c17b41defda58f7984248ec11e6f92907dda0a5548690747777e5967bfc
   languageName: node
   linkType: hard
 
@@ -1196,13 +1219,6 @@ __metadata:
     shebang-command: ^1.2.0
     which: ^1.2.9
   checksum: 5103fd3ec3c3d914d78190d1b7021bcca3f66d1c35008f67a696884a7d8c74a415158110436610abaae044d7351ecf8d71bb66872e88bbd80525b013b5b44256
-  languageName: node
-  linkType: hard
-
-"crypto@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "crypto@npm:1.0.1"
-  checksum: 41de5335cd291eee030cd1f478008ab4dc6fdefc07bc4d03dc1466af70d1b6936ab6f1c07805ee5fd8e9fb66f47268ebedce555308e655c969e937a2389db774
   languageName: node
   linkType: hard
 
@@ -1751,7 +1767,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fast-json-stable-stringify@npm:^2.0.0":
+"fast-json-stable-stringify@npm:2.x, fast-json-stable-stringify@npm:^2.0.0":
   version: 2.0.0
   resolution: "fast-json-stable-stringify@npm:2.0.0"
   checksum: cd22848b7072f690a6d37af85ecafcb55d7324386e8383e8a4c4a68a6f63c551a791616d8f63caddeb287a07ed855067120ef894df9f7ce8e1d32ee2a00016c9
@@ -3119,7 +3135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:^2.1.0":
+"json5@npm:2.x, json5@npm:^2.1.0":
   version: 2.1.1
   resolution: "json5@npm:2.1.1"
   dependencies:
@@ -3237,6 +3253,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.memoize@npm:4.x":
+  version: 4.1.2
+  resolution: "lodash.memoize@npm:4.1.2"
+  checksum: 75ecd1c58697ed0e1472b4a2ca8dc164af8e57be5c5c0def307758e3854a7988b517cba5c7ea07472005c09cf1694b8a0952a3ee336d58a4985196a791290432
+  languageName: node
+  linkType: hard
+
 "lodash.sortby@npm:^4.7.0":
   version: 4.7.0
   resolution: "lodash.sortby@npm:4.7.0"
@@ -3285,6 +3308,13 @@ __metadata:
   dependencies:
     semver: ^6.0.0
   checksum: 089579ddb85ede1affe2b172ed9dc4fde1a22b5135f63f0da47e983a00f743472efefa1d19c06eee515e1c9b9f81a86f9a89c9e334129a3e22a55bb799ebc0f0
+  languageName: node
+  linkType: hard
+
+"make-error@npm:1.x":
+  version: 1.3.5
+  resolution: "make-error@npm:1.3.5"
+  checksum: 93393c8e18caf7e82314636039d07a3541c73bfd5ddb6534f355c618927c8d0d000655981a773988deec14f7af95abe92c3654b880d9d1998abbe2ead4241d2c
   languageName: node
   linkType: hard
 
@@ -3490,7 +3520,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:0.5.1, mkdirp@npm:^0.5.0, mkdirp@npm:^0.5.1":
+"mkdirp@npm:0.5.1, mkdirp@npm:0.x, mkdirp@npm:^0.5.0, mkdirp@npm:^0.5.1":
   version: 0.5.1
   resolution: "mkdirp@npm:0.5.1"
   dependencies:
@@ -4202,7 +4232,6 @@ __metadata:
     "@types/node": ^12.12.17
     "@yarnpkg/pnpify": ^2.0.0-rc.12
     body-parser: ^1.19.0
-    crypto: ^1.0.1
     debug: ^4.1.1
     express: ^4.17.1
     is-ci: ^2.0.0
@@ -4213,6 +4242,7 @@ __metadata:
     query-string: ^6.8.3
     rimraf: ^3.0.0
     signale: ^1.4.0
+    ts-jest: ^24.2.0
     tslib: ^1.10.0
     typescript: ^3.7.3
     wait-port: ^0.2.6
@@ -4500,6 +4530,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"resolve@npm:1.x":
+  version: 1.13.1
+  resolution: "resolve@npm:1.13.1"
+  dependencies:
+    path-parse: ^1.0.6
+  checksum: 3403913540dd0d5f4908513878576ff7bcee81b1b48f6d323ffad5090236100ef50d98ea268273746c98742249bad76cae3b38e15d88fd0c0a95c96d28e49052
+  languageName: node
+  linkType: hard
+
 "resolve@npm:^1.3.2":
   version: 1.12.0
   resolution: "resolve@npm:1.12.0"
@@ -4614,7 +4653,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^5.6.0, semver@npm:^5.7.1":
+"semver@npm:^5.5, semver@npm:^5.6.0, semver@npm:^5.7.1":
   version: 5.7.1
   resolution: "semver@npm:5.7.1"
   bin:
@@ -5218,6 +5257,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-jest@npm:^24.2.0":
+  version: 24.2.0
+  resolution: "ts-jest@npm:24.2.0"
+  dependencies:
+    bs-logger: 0.x
+    buffer-from: 1.x
+    fast-json-stable-stringify: 2.x
+    json5: 2.x
+    lodash.memoize: 4.x
+    make-error: 1.x
+    mkdirp: 0.x
+    resolve: 1.x
+    semver: ^5.5
+    yargs-parser: 10.x
+  peerDependencies:
+    jest: ">=24 <25"
+  bin:
+    ts-jest: cli.js
+  checksum: c65274487f3fbeb4fc9333f29523f82fd7846806a1aebe0fc4a2e8b3a859206a4c4376bfe3031876fa171cd02d7bfa1ef534d2a97a974ff1b3116fedc349947f
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^1.10.0":
   version: 1.10.0
   resolution: "tslib@npm:1.10.0"
@@ -5581,6 +5642,15 @@ __metadata:
   version: 3.1.1
   resolution: "yallist@npm:3.1.1"
   checksum: 96944f7521c3b45bac838a9893abe0d731b76ce32d2d794cb8633e93371ae9662c0fa2c05a114b588bc2972413c01c55e4925f15202257429f7f6844e4d7f174
+  languageName: node
+  linkType: hard
+
+"yargs-parser@npm:10.x":
+  version: 10.1.0
+  resolution: "yargs-parser@npm:10.1.0"
+  dependencies:
+    camelcase: ^4.1.0
+  checksum: 3b9acbc2631668870d58762101d588666410f0c55fa403abd7bd48a9c0b72c2d8e8da06e712db2cdd8399f2be5286539ff98d02d5046a12086a3ac8eae2f6cc6
   languageName: node
   linkType: hard
 

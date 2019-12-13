@@ -1,11 +1,19 @@
-const getRequestId = require('../dist/getRequestId').default
+const getRequestId = require('../src/getRequestId').default
 
 it('Generates same names for same request', () => {
   const name1 = getRequestId({ url: 'http://example.com' })
   const name2 = getRequestId({ url: 'http://example.com' })
 
-  expect(name1).toBe('get-d3c8eae0')
+  expect(name1).toBe('get-october-leopard-owe')
   expect(name2).toBe(name1)
+})
+
+it('Generates prefix according to method', () => {
+  const nameGet = getRequestId({ url: 'http://example.com', method: 'gEt' })
+  const namePatch = getRequestId({ url: 'http://example.com', method: 'PATCH' })
+
+  expect(nameGet).toBe('get-october-leopard-owe')
+  expect(namePatch).toBe('patch-october-leopard-owe')
 })
 
 it('skipQueryParams does not affects output name', () => {
