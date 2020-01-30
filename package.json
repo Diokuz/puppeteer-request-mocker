@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-request-mocker",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "puppeteer request mocker",
   "main": "lib/index.js",
   "installConfig": {
@@ -23,6 +23,9 @@
     "url": "https://github.com/Diokuz/puppeteer-request-mocker/issues"
   },
   "homepage": "https://github.com/Diokuz/puppeteer-request-mocker#readme",
+  "scripts": {
+    "postinstall": "echo 'puppeteer-request-mocker is deprecated, use teremock instead'"
+  },
   "dependencies": {
     "crypto": "^1.0.1",
     "debug": "^4.1.1",

@@ -1,5 +1,46 @@
 # puppeteer-request-mocker
 
+> Deprecation warning: puppeteer-request-mocker is deprecated, use [teremock](https://github.com/Diokuz/teremock) instead.
+
+## Migration to teremock
+
+Some options did not changed: `page`, `ci`.
+
+Some options just renamed: `workDir → wd`, `response → responseOverrides`.
+
+Other options were replaced: `queryParams`, `skipQueryParams`, `skipPostParams`, `mockList`, `okList`, `passList`, `mockMiss`, `awaitConnectionsOnStop`.
+
+These options you need to convert to interceptors. For example, say you have puppeteer-request-mocker configuration:
+
+```js
+{
+  page: browser.page,
+  workDir: 'path/to/dir',
+  mockList: [`https://example.com/my-api`],
+  skipQueryParams: ['randomId'],
+}
+```
+
+That would transform to
+
+```js
+{
+  page: browser.page,
+  wd: 'path/to/dir',
+  interceptors: {
+    api: {
+      url: 'https://example.com/my-api',
+      name: myApi,
+      naming: {
+        query: { blacklist: ['randomId'] }
+      }
+    }
+  }
+}
+```
+
+___
+
 ## Do I need that thing?
 
 If you are writing puppeteer tests, and you want to mock your network responses easily – probably yes.
